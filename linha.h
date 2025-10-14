@@ -4,9 +4,7 @@
 
 typedef void *Linha;
 
-Linha criaLinha(int i, double x, double y, double p1, double p2);
-
-Linha criaLinhaColorido(int i, double x, double y, double p1, double p2, char *corp);
+Linha criaLinha(int i, double x1, double y1, double x2, double y2, char *corp);
 
 
 double area(Linha t);

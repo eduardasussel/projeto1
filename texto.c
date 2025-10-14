@@ -19,7 +19,7 @@ typedef struct {
 Texto criaTexto(int i, double x, double y, double raio, char *corb, char *corp, char *txto) {
     TEXTOS *t = malloc(sizeof(TEXTOS));
     if (!t) {
-        printf("Erro ao alocar círculo!\n");
+        printf("Erro ao alocar texto!\n");
         exit(1);
     }
 
