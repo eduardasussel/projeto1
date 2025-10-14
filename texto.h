@@ -4,10 +4,7 @@
 
 typedef void *Texto;
 
-Texto criaTexto(int i, double x, double y);
-
-Texto criaTextoColorido(int i, double x, double y, char *corb, char *corp, char *a,char txto[50]);
-
+Texto criaTexto(int i, double x, double y, char *corb, char *corp, char *a, char txto[50]);
 
 double area(Texto t);
 

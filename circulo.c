@@ -6,7 +6,9 @@
 
 typedef struct {
     int i;
-    double x, y, raio;
+    double x;
+    double y;
+    double raio;
     char corb[20];
     char corp[20];
 } CIRCULOS;
