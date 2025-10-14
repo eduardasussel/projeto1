@@ -9,14 +9,14 @@ typedef struct {
     double x;
     double y;
     double raio;
+    char *a;
     char corb[20];
     char corp[20];
-    char *a;
     char txto[50];
 } TEXTOS;
 
 
-Texto criaTexto(int i, double x, double y, double raio, char *corb, char *corp, char *txto) {
+Texto criaTexto(int i, double x, double y, char *a, char *corb, char *corp, char *txto) {
     TEXTOS *t = malloc(sizeof(TEXTOS));
     if (!t) {
         printf("Erro ao alocar texto!\n");
@@ -26,9 +26,9 @@ Texto criaTexto(int i, double x, double y, double raio, char *corb, char *corp, 
     t->i = i;
     t->x = x;
     t->y = y;
+    t->a = "a";
     strcpy(t->corb, corb);
     strcpy(t->corp, corp);
-    t->a = "a";
     strcpy(t->txto, txto);
     return t;
 }
