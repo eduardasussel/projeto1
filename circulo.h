@@ -4,9 +4,7 @@
 
 typedef void *Circulo;
 
-Circulo criaCirculo(int i, double x, double y, double raio);
-
-Circulo criaCirculoColorido(int i, double x, double y, double raio, char *corb, char *corp);
+Circulo criaCirculo(int i, double x, double y, double raio, char *corb, char *corp);
 
 double area(Circulo t);
 

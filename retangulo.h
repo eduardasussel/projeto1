@@ -4,10 +4,7 @@
 
 typedef void *Retangulo;
 
-Retangulo criaRetangulo(int i, double x, double y, double largura, double altura);
-
-Retangulo criaRetanguloColorido(int i, double x, double y, double largura, double altura, char *corb, char *corp);
-
+Retangulo criaRetangulo(int i, double x, double y, double largura, double altura, char *corb, char *corp);
 
 double area(Retangulo t);
 
