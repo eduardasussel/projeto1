@@ -6,19 +6,20 @@
 #include "texto.h"
 #include "linha.h"
 #include "pilha.h"
+#include "disparador.h"
+#include "carregador.h"
 
 
-void lerArquivoGeo(){
-FILE *fp = fopen("entrada/entrada.txt", "r");
+void lerArquivoGeo(const char *arqg, PILHA *chao){
+FILE *fp = fopen(arqg, "r");
     if(fp == NULL){
         printf("Erro na abertura do arquivo");
     }
 
-    PILHA *chao = criaPilha();
     char forma;
 
 while (fscanf(fp, " %c", &forma) == 1) {
-    if (forma, 'c') {
+    if (forma =='c') {
         int i;
         double x, y, raio;
         char corb[20], corp[20];
@@ -29,7 +30,7 @@ while (fscanf(fp, " %c", &forma) == 1) {
         push(chao, c);
     }
 
-     if(forma, "r") {
+     if(forma =='r') {
         int i;
         double x, y, largura, altura;
         char corb[20], corp[20];
@@ -40,7 +41,7 @@ while (fscanf(fp, " %c", &forma) == 1) {
         push(chao, r);
     }
 
-    if(forma, "t") {
+    if(forma == 't') {
         int i;
         double x, y;
         char a, corb[20], corp[20], txto[50];
@@ -51,7 +52,7 @@ while (fscanf(fp, " %c", &forma) == 1) {
         push(chao, t);
     }
 
-    if(strcmp(forma, "l") == 0){
+    if(forma == 'l'){
         int i;
         double x1, y1, x2, y2;
         char corp[20];
@@ -64,4 +65,46 @@ while (fscanf(fp, " %c", &forma) == 1) {
 }
 
 fclose(fp);
+}
+
+void lerArquivoQry(const char *arqq, PILHA *chao){
+    FILE *fq = fopen(arqq, "r");
+    if(fq == NULL){
+        printf("Erro na abertura do arquivo");
+    }
+
+    char comando[4];
+    DISPARADOR *d;
+
+    while (fscanf(fq, " %s", &comando) == 1) {
+     if (strcmp(comando, "pd") == 0) {
+        double dx, dy;
+        fscanf(fq, "%lf %lf", &dx, &dy);
+
+        if (d == NULL){
+                d = criaDisparador(dx, dy);
+
+            } else {
+                posicionarDisparador(d, dx, dy);
+            }
+
+    }
+
+    CARREGADOR *cesq;
+    int tamanho = pilhaTamnanho(chao);
+
+     if (strcmp(comando, "lc") == 0) {
+
+        int n;
+        fscanf(fq, "%d", &n);
+        
+        if (cesq == NULL){
+                cesq = criaCarregador();
+
+            } else {
+                    carregadorChao(cesq, chao, n, tamanho);
+            }
+    }
+}
+ fclose(fq);
 }

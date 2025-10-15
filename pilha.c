@@ -7,9 +7,12 @@ typedef struct elemento {
     struct elemento *prox;
 } ELEMENTO;
 
+typedef ELEMENTO *PONT;
+
 typedef struct pilha {
     ELEMENTO *topo;
 } PILHA;
+
 
 PILHA *criaPilha() {
     PILHA *p = malloc(sizeof(PILHA));
@@ -25,12 +28,21 @@ void push(PILHA *p, void *i) {
 }
 
 void *pop(PILHA *p) {
-    if (p->topo == NULL)
-        return NULL;
-
+    if (!p->topo) return NULL;
     ELEMENTO *removido = p->topo;
     void *i = removido->i;
     p->topo = removido->prox;
     free(removido);
     return i;
+}
+
+int pilhaTamanho(PILHA *p) {
+    PONT atual = p->topo;
+    int tam = 0;
+
+    while(atual !=NULL){
+        tam++;
+        atual = atual->prox;
+    }
+    return tam;
 }

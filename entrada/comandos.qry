@@ -1,0 +1,14 @@
+pd 1 0.0 0.0
+pd 2 0.0 100.0
+lc 6 20
+lc 7 25
+lc 9 15
+lc 3 25
+lc 11 35
+atch 1 6 7
+atch 2 3 11
+shft 2 e 4
+shft 1 d 1
+dsp 1 20.0 27.35
+dsp 2 14.95 -70.0
+calc

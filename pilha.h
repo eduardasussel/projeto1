@@ -9,4 +9,6 @@ void push(PILHA *p, void *i);
 
 void *pop(PILHA *p);
 
+int pilhaTamnanho(PILHA *p);
+
 #endif
