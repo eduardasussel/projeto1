@@ -91,8 +91,8 @@ void lerArquivoQry(const char *arqq, PILHA *chao){
     }
 
     CARREGADOR *cesq;
-    int tamanho = pilhaTamnanho(chao);
-
+    CARREGADOR *cdir;
+    
      if (strcmp(comando, "lc") == 0) {
 
         int n;
@@ -102,9 +102,24 @@ void lerArquivoQry(const char *arqq, PILHA *chao){
                 cesq = criaCarregador();
 
             } else {
-                    carregadorChao(cesq, chao, n, tamanho);
+                    carregadorChao(cesq, chao, n);
             }
     }
+
+    if (strcmp(comando, "atch") == 0) {
+
+        int n;
+        fscanf(fq, "%d", &n);
+
+        if (cesq == NULL){
+                cdir = criaCarregador();
+
+            } else {
+                    encaixarCarregador(d,cesq, cdir);
+    }
+            }
+    
+    
 }
  fclose(fq);
 }

@@ -10,7 +10,7 @@ void CriaDisparador(double dx, double dy);
 
 void posicionarDis(DISPARADOR *d, double dx, double dy);
    
-void colocarCarregadorC(DISPARADOR *p, CESQ *ce, int n);
+void encaixarCarregador(DISPARADOR *d, CARREGADOR *cesq, CARREGADOR *cdir);
 
 void encaixarCarregadores(DISPARADOR *d, CESQ *ce, CDIR *cd);
 
