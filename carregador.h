@@ -5,8 +5,12 @@
 
 typedef struct carregador CARREGADOR;
 
-CARREGADOR criaCarregador();
+CARREGADOR *criaCarregador();
 
 int carregadorChao(CARREGADOR *c, PILHA *chao, int n);
+
+void *popCarregador(CARREGADOR *c);
+
+void *pushCarregador(CARREGADOR *c, void *novaforma);
 
 #endif

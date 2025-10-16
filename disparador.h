@@ -12,9 +12,11 @@ void posicionarDis(DISPARADOR *d, double dx, double dy);
    
 void encaixarCarregador(DISPARADOR *d, CARREGADOR *cesq, CARREGADOR *cdir);
 
-void encaixarCarregadores(DISPARADOR *d, CESQ *ce, CDIR *cd);
+void botoes(DISPARADOR *d, char botao, int n, CARREGADOR *cesq, CARREGADOR *cdir);
 
-void botoes(DISPARADOR *d, char botao, int n);
+void *popDisparador(DISPARADOR *d);
+
+void *pushDisparador(DISPARADOR *d, void *novaforma);
 
 void disparar(DISPARADOR *d, int i, double dx, double dy);
 

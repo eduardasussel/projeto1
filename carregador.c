@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "carregador.h"
 #include "pilha.h"
 
@@ -32,7 +33,22 @@ int carregadorChao(CARREGADOR *c, PILHA *chao, int n){
         novo->prox = c->topo;
         c->topo = novo;
 
-        return 1;
       }
+        return 1;
 }
 
+void *popCarregador(CARREGADOR *c) {
+    if (!c->topo) return NULL;
+    FORMA *removido = c->topo;
+    void *forma = removido->forma;
+    c->topo = removido->prox;
+    free(removido);
+    return forma;
+}
+
+void *pushCarregador(CARREGADOR *c, void *novaforma){
+    FORMA *novo = malloc(sizeof(FORMA));
+    novo->forma = novaforma;
+    novo->prox = c->topo;
+    c->topo = novo;
+}

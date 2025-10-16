@@ -118,6 +118,16 @@ void lerArquivoQry(const char *arqq, PILHA *chao){
                     encaixarCarregador(d,cesq, cdir);
     }
             }
+
+    if (strcmp(comando, "shft") == 0) {
+
+        char botao;
+        int n;
+        fscanf(fq, "%c %d", &botao, &n);
+
+        botoes(d, botao, n, cesq, cdir);
+
+        }
     
     
 }

@@ -20,9 +20,9 @@ PILHA *criaPilha() {
     return p;
 }
 
-void push(PILHA *p, void *i) {
+void push(PILHA *p, void *j) {
     ELEMENTO *novo = malloc(sizeof(ELEMENTO));
-    novo->i = i;
+    novo->i = j;
     novo->prox = p->topo;
     p->topo = novo;
 }
