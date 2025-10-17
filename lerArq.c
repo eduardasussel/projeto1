@@ -8,6 +8,7 @@
 #include "pilha.h"
 #include "disparador.h"
 #include "carregador.h"
+#include "arena.h"
 
 
 void lerArquivoGeo(const char *arqg, PILHA *chao){
@@ -74,11 +75,11 @@ void lerArquivoQry(const char *arqq, PILHA *chao){
     }
 
     char comando[4];
-    DISPARADOR *d;
+    DISPARADOR *d = NULL;
+    double dx, dy;
 
     while (fscanf(fq, " %s", &comando) == 1) {
      if (strcmp(comando, "pd") == 0) {
-        double dx, dy;
         fscanf(fq, "%lf %lf", &dx, &dy);
 
         if (d == NULL){
@@ -90,8 +91,9 @@ void lerArquivoQry(const char *arqq, PILHA *chao){
 
     }
 
-    CARREGADOR *cesq;
-    CARREGADOR *cdir;
+    CARREGADOR *cesq = NULL;
+    CARREGADOR *cdir = NULL;
+    ARENA *a = NULL;
     
      if (strcmp(comando, "lc") == 0) {
 
@@ -100,10 +102,9 @@ void lerArquivoQry(const char *arqq, PILHA *chao){
         
         if (cesq == NULL){
                 cesq = criaCarregador();
+        }
 
-            } else {
                     carregadorChao(cesq, chao, n);
-            }
     }
 
     if (strcmp(comando, "atch") == 0) {
@@ -128,6 +129,19 @@ void lerArquivoQry(const char *arqq, PILHA *chao){
         botoes(d, botao, n, cesq, cdir);
 
         }
+
+    if (strcmp(comando, "dsp") == 0) {
+    double dx, dy;
+    char dd;
+    fscanf(fq, "%lf %lf %c", &dx, &dy, &dd);
+
+    if (a == NULL) {
+        a = criaArena();
+    }
+
+    disparar(d, dx, dy);
+
+}
     
     
 }

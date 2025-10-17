@@ -3,8 +3,12 @@
 #include "carregador.h"
 #include "pilha.h"
 
+typedef enum { CIRCULO, RETANGULO, TEXTO, LINHA } TipoForma;
+
 typedef struct forma{
     void *forma;
+    int id;  
+    TipoForma tipo;
     struct forma *prox;
 } FORMA;
 
@@ -37,18 +41,24 @@ int carregadorChao(CARREGADOR *c, PILHA *chao, int n){
         return 1;
 }
 
-void *popCarregador(CARREGADOR *c) {
-    if (!c->topo) return NULL;
-    FORMA *removido = c->topo;
-    void *forma = removido->forma;
-    c->topo = removido->prox;
-    free(removido);
-    return forma;
+void pushCarregador(CARREGADOR *c, void *novaforma, int id, TipoForma tipo){
+    if (!c) return;
+    FORMA *novo = malloc(sizeof(FORMA));
+    if (!novo) return;
+    novo->forma = novaforma;
+    novo->id = id;
+    novo->tipo = tipo;
+    novo->prox = c->topo;
+    c->topo = novo;
 }
 
-void *pushCarregador(CARREGADOR *c, void *novaforma){
+void pushCarregador(CARREGADOR *c, void *novaforma, int id, TipoForma tipo){
+    if (!c) return;
     FORMA *novo = malloc(sizeof(FORMA));
+    if (!novo) return;
     novo->forma = novaforma;
+    novo->id = id;
+    novo->tipo = tipo;
     novo->prox = c->topo;
     c->topo = novo;
 }

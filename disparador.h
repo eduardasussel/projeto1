@@ -6,7 +6,7 @@
 
 typedef struct disparador DISPARADOR;
 
-void CriaDisparador(double dx, double dy);
+DISPARADOR *criaDisparador(double dx, double dy);
 
 void posicionarDis(DISPARADOR *d, double dx, double dy);
    
@@ -18,7 +18,7 @@ void *popDisparador(DISPARADOR *d);
 
 void *pushDisparador(DISPARADOR *d, void *novaforma);
 
-void disparar(DISPARADOR *d, int i, double dx, double dy);
+void disparar(DISPARADOR *d, double dx, double dy);
 
 void rajada(DISPARADOR *d, char botao, double dx, double dy, double ix, double iy);
 

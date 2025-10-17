@@ -31,3 +31,9 @@ Retangulo criaRetangulo(int i, double x, double y, double largura, double altura
     strcpy(r->corp, corp);
     return r; 
 }
+
+void moveRetangulo(Retangulo r, double dx, double dy) {
+    RETANGULOS *ret = (RETANGULOS *) r;
+    ret->x += dx;
+    ret->y += dy;
+}

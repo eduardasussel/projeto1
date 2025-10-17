@@ -1,16 +1,15 @@
 ﻿#ifndef CIRCULO_H
 #define CIRCULO_H
 
-
 typedef void *Circulo;
 
-Circulo criaCirculo(int i, double x, double y, double raio, char *corb, char *corp);
+Circulo criaCirculo(int i, double x, double y, double raio, const char *corb, const char *corp);
 
 double area(Circulo t);
 
 double rotaciona(Circulo t, double graus);
 
-double move(Circulo t, double dx, double dy);
+void moveCirculo(Circulo t, double dx, double dy);
 
 double translada(Circulo t, double angulo, double extensão);
 

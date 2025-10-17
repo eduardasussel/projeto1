@@ -1,17 +1,26 @@
 #include <stdio.h>
 #include "disparador.h"
 #include "pilha.h"
+#include "circulo.h"
+#include "retangulo.h"
+#include "texto.h"
+#include "linha.h"
+
+
+typedef enum { CIRCULO, RETANGULO, TEXTO, LINHA } TipoForma;
 
 typedef struct {
     double dx;
     double dy;
+    int id;  
+    TipoForma tipo;
     void *forma;
     CARREGADOR *cesqencaixado;
     CARREGADOR *cdirencaixado;
 } DISPARADOR;
 
 
-DISPARADOR *criaDispadarador(double dx, double dy) {
+DISPARADOR *criaDisparador(double dx, double dy) {
     DISPARADOR *d = malloc(sizeof(DISPARADOR));
     d->dx = dx;
     d->dy = dy;
@@ -22,7 +31,7 @@ DISPARADOR *criaDispadarador(double dx, double dy) {
     return d;
 }
 
-void posicionarDisparador(DISPARADOR *d, double dx, double dy) {
+void posicionarDis(DISPARADOR *d, double dx, double dy) {
     if (!d) return;
     d->dx = dx;
     d->dy = dy;
@@ -34,16 +43,17 @@ void encaixarCarregador(DISPARADOR *d, CARREGADOR *cesq, CARREGADOR *cdir) {
     d->cdirencaixado = cdir;
 }
 
+void *pushDisparador(DISPARADOR *d, void *novaforma, TipoForma tipo){
+    if (!d) return;
+    d->forma = novaforma;
+    d->tipo = tipo;
+}
+
 void *popDisparador(DISPARADOR *d){
     if (!d || !d->forma) return NULL;
     void *formaRemovida = d->forma;
-    d->forma = NULL; 
+    d->forma = NULL;
     return formaRemovida;
-}
-
-void *pushDisparador(DISPARADOR *d, void *novaforma){
-    if (!d) return;
-    d->forma = novaforma;
 }
 
 void botoes(DISPARADOR *d, char botao, int n, CARREGADOR *cesq, CARREGADOR *cdir){
@@ -90,3 +100,39 @@ void botoes(DISPARADOR *d, char botao, int n, CARREGADOR *cesq, CARREGADOR *cdir
         }
     }
 }
+
+
+void disparar(DISPARADOR *d, double dx, double dy) {
+    if (!d || !d->forma) {
+        printf("Nenhuma forma no disparador para disparar!\n");
+        return;
+    }
+
+    switch (d->tipo) {
+        case CIRCULO: {
+            Circulo c = d->forma;
+            moveCirculo(c, dx, dy);
+            break;
+        }
+        case RETANGULO: {
+            Retangulo r = d->forma;
+            moveRetangulo(r, dx, dy);
+            break;
+        }
+        case TEXTO: {
+            Texto t = d->forma;
+            moveTexto(t, dx, dy);
+            break;
+        }
+        case LINHA: {
+            Linha l = d->forma;
+            moveLinha(l, dx, dy);
+            break;
+        }
+        default:
+            break;
+    }
+
+    popDisparador(d);
+}
+

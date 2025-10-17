@@ -3,7 +3,6 @@
 #include <string.h>
 #include "circulo.h"
 
-
 typedef struct {
     int i;
     double x;
@@ -13,11 +12,10 @@ typedef struct {
     char corp[20];
 } CIRCULOS;
 
-
-Circulo criaCirculo(int i, double x, double y, double raio, char *corb, char *corp) {
+Circulo criaCirculo(int i, double x, double y, double raio, const char *corb, const char *corp) {
     CIRCULOS *c = malloc(sizeof(CIRCULOS));
     if (!c) {
-        printf("Erro ao alocar círculo!\n");
+        printf("Erro ao alocar círculo!");
         exit(1);
     }
 
@@ -25,7 +23,24 @@ Circulo criaCirculo(int i, double x, double y, double raio, char *corb, char *co
     c->x = x;
     c->y = y;
     c->raio = raio;
-    strcpy(c->corb, corb);
-    strcpy(c->corp, corp);
-    return c;
+
+    
+    strncpy(c->corb, corb, sizeof(c->corb) - 1);
+    c->corb[sizeof(c->corb) - 1] = '\0';
+
+    strncpy(c->corp, corp, sizeof(c->corp) - 1);
+    c->corp[sizeof(c->corp) - 1] = '\0';
+
+    return (Circulo)c;
+}
+
+double area(Circulo t) {
+    CIRCULOS *c = (CIRCULOS *) t;
+    return 3.14159 * c->raio * c->raio;
+}
+
+void movecirculo(Circulo c, double dx, double dy) {
+    CIRCULOS *cir = (CIRCULOS *) c;
+    cir->x += dx;
+    cir->y += dy;
 }

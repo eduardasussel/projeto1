@@ -11,6 +11,6 @@ int carregadorChao(CARREGADOR *c, PILHA *chao, int n);
 
 void *popCarregador(CARREGADOR *c);
 
-void *pushCarregador(CARREGADOR *c, void *novaforma);
+void *pushCarregador(CARREGADOR *c, void *forma, int id, TipoForma tipo);
 
 #endif

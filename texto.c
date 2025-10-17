@@ -32,3 +32,9 @@ Texto criaTexto(int i, double x, double y, char *a, char *corb, char *corp, char
     strcpy(t->txto, txto);
     return t;
 }
+
+void moveTexto(Texto t, double dx, double dy) {
+    TEXTOS *tex = (TEXTOS *) t;
+    tex->x += dx;
+    tex->y += dy;
+}

@@ -10,7 +10,7 @@ double area(Texto t);
 
 double rotaciona(Texto t, double graus);
 
-double move(Texto t, double dx, double dy);
+void move(Texto t, double dx, double dy);
 
 double translada(Texto t, double angulo, double extensão);
 

@@ -11,7 +11,7 @@ double area(Linha t);
 
 double rotaciona(Linha t, double graus);
 
-double move(Linha t, double dx, double dy);
+void moveLinha(Linha t, double dx, double dy);
 
 double translada(Linha t, double angulo, double extensão);
 
