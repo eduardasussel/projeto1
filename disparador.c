@@ -102,37 +102,66 @@ void botoes(DISPARADOR *d, char botao, int n, CARREGADOR *cesq, CARREGADOR *cdir
 }
 
 
-void disparar(DISPARADOR *d, double dx, double dy) {
-    if (!d || !d->forma) {
-        printf("Nenhuma forma no disparador para disparar!\n");
-        return;
-    }
+void disparar(DISPARADOR *d, ARENA *a, double dx, double dy, FILE *txt) {
+    if (!d || !d->forma || !a) return;
+
+    void *forma = d->forma; 
 
     switch (d->tipo) {
         case CIRCULO: {
-            Circulo c = d->forma;
-            moveCirculo(c, dx, dy);
+            Circulo c = (Circulo) forma;
+            double x = getXCirculo(c);
+            double y = getYCirculo(c);
+            setXCirculo(c, x + dx);
+            setYCirculo(c, y + dy);
+            if (txt)
+                fprintf(txt, "CIRCULO %d -> Nova pos: (%.2lf, %.2lf)\n", d->id, x + dx, y + dy);
             break;
         }
+
         case RETANGULO: {
-            Retangulo r = d->forma;
-            moveRetangulo(r, dx, dy);
+            Retangulo r = (Retangulo) forma;
+            double x = getXRetangulo(r);
+            double y = getYRetangulo(r);
+            setXRetangulo(r, x + dx);
+            setYRetangulo(r, y + dy);
+            if (txt)
+                fprintf(txt, "RETANGULO %d -> Nova pos: (%.2lf, %.2lf)\n", d->id, x + dx, y + dy);
             break;
         }
+
         case TEXTO: {
-            Texto t = d->forma;
-            moveTexto(t, dx, dy);
+            Texto t = (Texto) forma;
+            double x = getXTexto(t);
+            double y = getYTexto(t);
+            setXTexto(t, x + dx);
+            setYTexto(t, y + dy);
+            if (txt)
+                fprintf(txt, "TEXTO %d -> Nova pos: (%.2lf, %.2lf)\n", d->id, x + dx, y + dy);
             break;
         }
+
         case LINHA: {
-            Linha l = d->forma;
-            moveLinha(l, dx, dy);
+            Linha l = (Linha) forma;
+            double x1 = getX1Linha(l);
+            double y1 = getY1Linha(l);
+            double x2 = getX2Linha(l);
+            double y2 = getY2Linha(l);
+            setX1Linha(l, x1 + dx);
+            setY1Linha(l, y1 + dy);
+            setX2Linha(l, x2 + dx);
+            setY2Linha(l, y2 + dy);
+            if (txt)
+                fprintf(txt, "LINHA %d -> Nova pos: (%.2lf, %.2lf)-(%.2lf, %.2lf)\n", 
+                        d->id, x1 + dx, y1 + dy, x2 + dx, y2 + dy);
             break;
         }
+
         default:
             break;
     }
 
-    popDisparador(d);
-}
+    pushArena(a, forma, d->id, d->tipo);
 
+    d->forma = NULL;
+}

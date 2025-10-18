@@ -2,15 +2,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct forma {
-    void *item;
-    struct forma *prox;
-} FORMA;
-
-typedef FORMA *PONT;
+typedef struct noForma {
+    void *forma;
+    int id;
+    TipoForma tipo;
+    struct noForma *prox;
+} NOFORMA;
 
 typedef struct arena {
-    FORMA *topo;
+    NOFORMA *formas;
 } ARENA;
 
 
@@ -20,9 +20,11 @@ ARENA *criaArena() {
     return a;
 }
 
-void pushArena(ARENA *a, void *novoitem){
-    FORMA *novo = malloc(sizeof(FORMA));
-    novo->item = novoitem;
-    novo->prox = a->topo;
-    a->topo = novo;
+void pushArena(ARENA *a, void *forma, int id, TipoForma tipo) {
+    NOFORMA *novo = malloc(sizeof(NOFORMA));
+    novo->forma = forma;
+    novo->id = id;
+    novo->tipo = tipo;
+    novo->prox = a->formas;
+    a->formas = novo;
 }

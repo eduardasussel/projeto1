@@ -135,14 +135,38 @@ void lerArquivoQry(const char *arqq, PILHA *chao){
     char dd;
     fscanf(fq, "%lf %lf %c", &dx, &dy, &dd);
 
-    if (a == NULL) {
-        a = criaArena();
-    }
-
-    disparar(d, dx, dy);
-
+    disparar(d, a, dx, dy, txt);
 }
-    
+
+
+    if (strcmp(comando, "rjd") == 0) {
+    char lado;
+    double dx, dy, ix, iy;
+    fscanf(fq, " %c %lf %lf %lf %lf", &lado, &dx, &dy, &ix, &iy);
+
+    CARREGADOR *c = (lado == 'e') ? cesq : cdir;
+
+    if (c != NULL && d != NULL) {
+        int i = 0;
+        while (!carregadorVazio(c)) {
+            double deslocX = dx + i * ix;
+            double deslocY = dy + i * iy;
+
+            botoes(d, lado, 1, cesq, cdir);
+
+            disparar(d, a, deslocX, deslocY, 'n'); 
+
+            i++;
+        }
+    } else {
+        printf("Carregador ou disparador não inicializado!\n");
+    }
+}
+
+if (strcmp(comando, "calc") == 0) {
+
+        calculo();
+    }
     
 }
  fclose(fq);
