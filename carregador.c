@@ -51,14 +51,3 @@ void pushCarregador(CARREGADOR *c, void *novaforma, int id, TipoForma tipo){
     novo->prox = c->topo;
     c->topo = novo;
 }
-
-void pushCarregador(CARREGADOR *c, void *novaforma, int id, TipoForma tipo){
-    if (!c) return;
-    FORMA *novo = malloc(sizeof(FORMA));
-    if (!novo) return;
-    novo->forma = novaforma;
-    novo->id = id;
-    novo->tipo = tipo;
-    novo->prox = c->topo;
-    c->topo = novo;
-}

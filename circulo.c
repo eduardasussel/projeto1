@@ -3,6 +3,8 @@
 #include <string.h>
 #include "circulo.h"
 
+#define PI 3.14159
+
 typedef struct {
     int i;
     double x;
@@ -34,13 +36,28 @@ Circulo criaCirculo(int i, double x, double y, double raio, const char *corb, co
     return (Circulo)c;
 }
 
-double area(Circulo t) {
-    CIRCULOS *c = (CIRCULOS *) t;
-    return 3.14159 * c->raio * c->raio;
-}
-
 void movecirculo(Circulo c, double dx, double dy) {
     CIRCULOS *cir = (CIRCULOS *) c;
     cir->x += dx;
     cir->y += dy;
+}
+
+double areaCirculo(Circulo c){
+    CIRCULOS *cir = (CIRCULOS *) c;
+    return PI * cir->raio * cir->raio; 
+}
+
+double xCirculo(Circulo c){
+    CIRCULOS *cir = (CIRCULOS *) c;
+    return cir->x;
+}
+
+double yCirculo(Circulo c){
+    CIRCULOS *cir = (CIRCULOS *) c;
+    return cir->y;
+}
+
+double raioCirculo(Circulo c){
+    CIRCULOS *cir = (CIRCULOS *) c;
+    return cir->raio;
 }

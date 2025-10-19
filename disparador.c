@@ -156,6 +156,12 @@ void disparar(DISPARADOR *d, ARENA *a, double dx, double dy, FILE *txt) {
                         d->id, x1 + dx, y1 + dy, x2 + dx, y2 + dy);
             break;
         }
+        
+        pushArena(a, forma, id, tipo);
+
+        if (nFormas(a) == 2) {
+            analisaArena(a, chao);
+        }
 
         default:
             break;

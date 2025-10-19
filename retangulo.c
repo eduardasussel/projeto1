@@ -37,3 +37,28 @@ void moveRetangulo(Retangulo r, double dx, double dy) {
     ret->x += dx;
     ret->y += dy;
 }
+
+double areaRetangulo(Retangulo r){
+    RETANGULOS *ret = (RETANGULOS *) r;
+    return ret->largura * ret->altura;
+}
+
+double xRetangulo(Retangulo r){
+    RETANGULOS *ret = (RETANGULOS *) r;
+    return ret->x;
+}
+
+double yRetangulo(Retangulo r){
+    RETANGULOS *ret = (RETANGULOS *) r;
+    return ret->y;
+}
+
+double larRetangulo(Retangulo r){
+    RETANGULOS *ret = (RETANGULOS *) r;
+    return ret->largura;
+}
+
+double altRetangulo(Retangulo r){
+    RETANGULOS *ret = (RETANGULOS *) r;
+    return ret->altura;
+}
