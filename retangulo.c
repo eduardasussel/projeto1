@@ -62,3 +62,28 @@ double altRetangulo(Retangulo r){
     RETANGULOS *ret = (RETANGULOS *) r;
     return ret->altura;
 }
+
+const char* corRetanguloP(Retangulo c) {
+    RETANGULOS *ret = (RETANGULOS *) c;
+    return ret->corp;
+}
+
+const char* corRetanguloB(Retangulo c) {
+    RETANGULOS *ret = (RETANGULOS *) c;
+    return ret->corb;
+}
+
+void novaCorRetanguloP(Retangulo c, const char *novaCor){
+    RETANGULOS *ret = (RETANGULOS *) c;
+    strcpy(ret->corb, novaCor);
+}
+
+void novaCorRetanguloB(Retangulo c, const char *novaCor){
+    RETANGULOS *ret = (RETANGULOS *) c;
+    strcpy(ret->corp, novaCor);
+}
+
+Retangulo clonaRetangulo(Retangulo c) {
+    RETANGULOS *ret = (RETANGULOS*) c;
+    return criaRetanguloColorido(ret->i, ret->x, ret->y, ret->largura, ret->altura, ret->corb, ret->corp);
+}

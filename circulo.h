@@ -21,4 +21,14 @@ double yCirculo(Circulo c);
 
 double raioCirculo(Circulo c);
 
+const char* corCirculoP(Circulo c);
+
+const char* corCirculoB(Circulo c);
+
+void novaCorCirculoP(Circulo c, const char *novaCor);
+
+void novaCorCirculoB(Circulo c, const char *novaCor);
+
+Circulo clonaCirculo(Circulo c);
+
 #endif

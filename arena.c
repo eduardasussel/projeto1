@@ -187,6 +187,55 @@ int sobrepor(void *forma1, TipoForma tipo1, void *forma2, TipoForma tipo2){
     return 0;
 }
 
+const char *PegaCorP(void *forma1, TipoForma tipo1){
+    switch(tipo1) {
+        case CIRCULO:   return corCirculoP(forma1);
+        case RETANGULO: return corRetanguloP(forma1);
+        case TEXTO:     return corTextoP(forma1);
+        case LINHA:     return corLinhaP(forma1);
+        default: return NULL;
+    }
+}
+
+const char *PegaCorB(void *forma1, TipoForma tipo1){
+    switch(tipo1) {
+        case CIRCULO:   return corCirculoB(forma1);
+        case RETANGULO: return corRetanguloB(forma1);
+        case TEXTO:     return corTextoB(forma1);
+        case LINHA:     return corLinhaB(forma1);
+        default: return NULL;
+    }
+}
+
+void MudaCorB(void *forma2, TipoForma tipo2, const char *novaCor){
+    switch(tipo2) {
+        case CIRCULO:   novaCorCirculoP(forma2, novaCor); break;
+        case RETANGULO: novaCorRetanguloP(forma2, novaCor); break;
+        case TEXTO:     novaCorTextoP(forma2, novaCor); break;
+        case LINHA:     novaCorLinhaP(forma2, novaCor); break;
+    }
+}
+
+void MudaCorP(void *forma2, TipoForma tipo2, const char *novaCor){
+    switch(tipo2) {
+        case CIRCULO:   novaCorCirculoB(forma2, novaCor); break;
+        case RETANGULO: novaCorRetanguloB(forma2, novaCor); break;
+        case TEXTO:     novaCorTextoB(forma2, novaCor); break;
+        case LINHA:     novaCorLinhaB(forma2, novaCor); break;
+    }
+}
+
+void *clonaForma(void *forma, TipoForma tipo) {
+    switch (tipo) {
+        case CIRCULO:   return clonaCirculo(forma);
+        case RETANGULO: return clonaRetangulo(forma);
+        case TEXTO:     return clonaTexto(forma);
+        case LINHA:     return clonaLinha(forma);
+        default: return NULL;
+    }
+}
+
+
 void analisaArena(ARENA *a, PILHA *c, ESMAGADO *e){
     AFORMA *forma1 = a->topo;
     AFORMA *forma2 = a->topo->prox;
@@ -199,13 +248,23 @@ void analisaArena(ARENA *a, PILHA *c, ESMAGADO *e){
 
     if(sobrepoe){
         if (area1 < area2){
-            pushEsmagado(e, forma2->forma, forma2->id, forma2->tipo);
-            push(c, forma1->forma);
+            pushEsmagado(e, forma1->forma, forma1->id, forma1->tipo);
+            push(c, forma2->forma);
 
         } else if (area1 >= area2){
+            const char *novaCorP = pegaCorP(forma1->forma, forma1->tipo);
+            const char *novaCorB = pegaCorB(forma1->forma, forma1->tipo);
+            mudaCorB(forma2->forma, forma2->tipo, novaCorP);
+
             push(c, forma1->forma);
             push(c, forma2->forma);
 
+            void *clone = clonaForma(forma1->forma, forma1->tipo);
+
+            MudaCorB(clone, forma1->tipo, novaCorP);
+            MudaCorP(clone, forma1->tipo, novaCorB);
+
+            push(c, clone);
         }
 
     } else {
@@ -218,5 +277,3 @@ void analisaArena(ARENA *a, PILHA *c, ESMAGADO *e){
     popArena(a);
 
 }
-
-

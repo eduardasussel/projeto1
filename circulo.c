@@ -61,3 +61,28 @@ double raioCirculo(Circulo c){
     CIRCULOS *cir = (CIRCULOS *) c;
     return cir->raio;
 }
+
+const char* corCirculoP(Circulo c) {
+    CIRCULOS *cir = (CIRCULOS *) c;
+    return cir->corp;
+}
+
+const char* corCirculoB(Circulo c) {
+    CIRCULOS *cir = (CIRCULOS *) c;
+    return cir->corb;
+}
+
+void novaCorCirculoP(Circulo c, const char *novaCor){
+    CIRCULOS *cir = (CIRCULOS *) c;
+    strcpy(cir->corb, novaCor);
+}
+
+void novaCorCirculoB(Circulo c, const char *novaCor){
+    CIRCULOS *cir = (CIRCULOS *) c;
+    strcpy(cir->corp, novaCor);
+}
+
+Circulo clonaCirculo(Circulo c) {
+    CIRCULOS *cir = (CIRCULOS*) c;
+    return criaCirculoColorido(cir->i, cir->x, cir->y, cir->raio, cir->corb, cir->corp);
+}

@@ -24,4 +24,14 @@ double larRetangulo(Retangulo r);
 
 double altRetangulo(Retangulo r);
 
+const char* corRetanguloP(Retangulo r);
+
+const char* corRetanguloB(Retangulo r);
+
+void novaCorRetanguloP(Retangulo r, const char *novaCor);
+
+void novaCorRetanguloB(Retangulo r, const char *novaCor);
+
+Retangulo clonaRetangulo(Retangulo r);
+
 #endif
