@@ -6,8 +6,10 @@ typedef enum { CIRCULO, RETANGULO, TEXTO, LINHA } TipoForma;
 
 ESMAGADO *criaEsmagado();
 
-void pushEsmagado(ESMAGADO *e, void *forma, int id, TipoForma tipo);
+void pushEsmagado(ESMAGADO *e3, void *forma, int id, TipoForma tipo);
 
 void *popEsmagado(ESMAGADO *e);
+
+double calculo(ESMAGADO *e);
 
 #endif

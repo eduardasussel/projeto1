@@ -9,6 +9,7 @@
 #include "disparador.h"
 #include "carregador.h"
 #include "arena.h"
+#include "esmagado.h"
 
 
 void lerArquivoGeo(const char *arqg, PILHA *chao){
@@ -128,14 +129,20 @@ void lerArquivoQry(const char *arqq, PILHA *chao){
 
         botoes(d, botao, n, cesq, cdir);
 
+
         }
 
+    FILE *txt = NULL;
     if (strcmp(comando, "dsp") == 0) {
     double dx, dy;
     char dd;
     fscanf(fq, "%lf %lf %c", &dx, &dy, &dd);
+    
+    if(txt = NULL){
+        criaArquivo(txt);
+    }
 
-    disparar(d, a, dx, dy, txt);
+    disparar(d, a, chao, dx, dy, txt);
 }
 
 
@@ -163,9 +170,15 @@ void lerArquivoQry(const char *arqq, PILHA *chao){
     }
 }
 
+ESMAGADO *e = NULL;
 if (strcmp(comando, "calc") == 0) {
 
-        calculo();
+    if (d == NULL){
+                e = criaEsmagado();
+
+            } else {
+                calculo(e);
+            }
     }
     
 }

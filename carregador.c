@@ -25,21 +25,28 @@ CARREGADOR *criaCarregador() {
     return c;
 }
 
-int carregadorChao(CARREGADOR *c, PILHA *chao, int n){
-      for (int i = 0 ; i < n; i++){
-        void *fc = pop(chao);
-        if (!fc) return 0;
+int carregadorChao(CARREGADOR *c, PILHA *chao, int n, FILE *txt) {
+    for (int i = 0; i < n; i++) {
+        FORMA *fchao = pop(chao);
+        if (!fchao) return 0;
 
         PONT novo = malloc(sizeof(FORMA));
-            if(!novo) return 0;
+        if (!novo) return 0;
 
-        novo->forma = fc;
+        novo->forma = fchao->forma;
+        novo->id = fchao->id;
+        novo->tipo = fchao->tipo;
+
         novo->prox = c->topo;
         c->topo = novo;
 
-      }
-        return 1;
+        if (txt != NULL)
+            reportaDados(fchao->forma, fchao->tipo, txt);
+    }
+
+    return 1;
 }
+
 
 void pushCarregador(CARREGADOR *c, void *novaforma, int id, TipoForma tipo){
     if (!c) return;
@@ -50,4 +57,19 @@ void pushCarregador(CARREGADOR *c, void *novaforma, int id, TipoForma tipo){
     novo->tipo = tipo;
     novo->prox = c->topo;
     c->topo = novo;
+}
+
+void *popCarregador(CARREGADOR *c, int *id, TipoForma tipo) {
+    if (!c || !c->topo) return NULL;
+
+    FORMA *removido = c->topo;
+    void *forma = removido->forma;
+
+    if (id) *id = removido->id;
+    if (tipo) tipo = removido->tipo;
+
+    c->topo = removido->prox;
+    free(removido);
+
+    return forma;
 }

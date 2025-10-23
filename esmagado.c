@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include "esmagado.h"
 #include "arena.h"
+#include "circulo.h"
+#include "retangulo.h"
+#include "texto.h"
+#include "linha.h"
 
 typedef struct eForma {
     void *forma;
@@ -51,4 +55,37 @@ void *popEsmagado(ESMAGADO *e) {
     free(removido);
 
     return forma;
+}
+
+double calculo(ESMAGADO *e){
+    EFORMA *forma = e->topo;
+    double area = 0;
+    double aTotal = 0;
+
+    while(forma !=NULL){
+        switch (forma->tipo) {
+        case CIRCULO:
+        area = areaCirculo(forma->forma);
+        break;
+
+        case RETANGULO:
+        area = areaRetangulo(forma->forma);
+        break;
+
+        case TEXTO:
+        area = 0;
+        break;
+
+        case LINHA:
+        area = 0;
+        break;
+    }
+
+    popEsmagado(e);
+
+        forma = forma->prox;
+        aTotal += area;
+    }
+    
+    return aTotal;
 }

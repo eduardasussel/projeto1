@@ -8,10 +8,9 @@ typedef struct {
     int i;
     double x;
     double y;
-    double raio;
-    char *a;
     char corb[20];
     char corp[20];
+    char *a;
     char txto[50];
 } TEXTOS;
 
@@ -37,4 +36,44 @@ void moveTexto(Texto t, double dx, double dy) {
     TEXTOS *tex = (TEXTOS *) t;
     tex->x += dx;
     tex->y += dy;
+}
+
+int iTexto(Texto t){
+    TEXTOS *tex = (TEXTOS *) t;
+    return tex->i;
+}
+
+double iTexto(Texto t){
+    TEXTOS *tex = (TEXTOS *) t;
+    return tex->i;
+}
+
+double xTexto(Texto t){
+    TEXTOS *tex = (TEXTOS *) t;
+    return tex->x;
+}
+
+double yTexto(Texto t){
+    TEXTOS *tex = (TEXTOS *) t;
+    return tex->y;
+}
+
+const char* corTextoP(Texto t) {
+    TEXTOS *tex = (TEXTOS *) t;
+    return tex->corp;
+}
+
+const char* corTextoB(Texto t) {
+    TEXTOS *tex = (TEXTOS *) t;
+    return tex->corb;
+}
+
+char aTexto(Texto t) {
+    TEXTOS *tex = (TEXTOS *) t;
+    return tex->a;
+}
+
+const char* txtoTexto(Texto t) {
+    TEXTOS *tex = (TEXTOS *) t;
+    return tex->txto;
 }

@@ -16,6 +16,8 @@ double translada(Retangulo t, double angulo, double extensão);
 
 void toSvg(Retangulo t, char buf[], int lenBuf);
 
+int iRetangulo(Retangulo r);
+
 double xRetangulo(Retangulo r);
 
 double yRetangulo(Retangulo r);

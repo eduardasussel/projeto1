@@ -1,11 +1,13 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "disparador.h"
+#include "carregador.h"
 #include "pilha.h"
 #include "circulo.h"
 #include "retangulo.h"
 #include "texto.h"
 #include "linha.h"
-
+#include "gerarTxt.h"
 
 typedef enum { CIRCULO, RETANGULO, TEXTO, LINHA } TipoForma;
 
@@ -20,14 +22,19 @@ typedef struct {
 } DISPARADOR;
 
 
+
+
 DISPARADOR *criaDisparador(double dx, double dy) {
     DISPARADOR *d = malloc(sizeof(DISPARADOR));
+    if (!d) {
+        printf("Erro ao alocar disparador!\n");
+        exit(1);
+    }
     d->dx = dx;
     d->dy = dy;
     d->forma = NULL;
     d->cesqencaixado = NULL;
     d->cdirencaixado = NULL;
-
     return d;
 }
 
@@ -43,66 +50,72 @@ void encaixarCarregador(DISPARADOR *d, CARREGADOR *cesq, CARREGADOR *cdir) {
     d->cdirencaixado = cdir;
 }
 
-void *pushDisparador(DISPARADOR *d, void *novaforma, TipoForma tipo){
-    if (!d) return;
+void *pushDisparador(DISPARADOR *d, void *novaforma, int id, TipoForma tipo) {
+    if (!d) return NULL;
     d->forma = novaforma;
+    d->id = id;
     d->tipo = tipo;
+    return novaforma;
 }
 
-void *popDisparador(DISPARADOR *d){
+void *popDisparador(DISPARADOR *d) {
     if (!d || !d->forma) return NULL;
     void *formaRemovida = d->forma;
     d->forma = NULL;
     return formaRemovida;
 }
 
-void botoes(DISPARADOR *d, char botao, int n, CARREGADOR *cesq, CARREGADOR *cdir){
+void botoes(DISPARADOR *d, char botao, int n, CARREGADOR *cesq, CARREGADOR *cdir, FILE *txt) {
+    if (!d || !cesq || !cdir) {
+        printf("Disparador ou carregadores não inicializados!\n");
+        return;
+    }
+
     if (d->cesqencaixado == NULL || d->cdirencaixado == NULL) {
         printf("Carregadores não encaixados!\n");
         return;
     }
 
     for (int i = 0; i < n; i++) {
+        void *novaforma = NULL;
+        int id;
+        TipoForma tipo;
 
         if (botao == 'e') {
-            void *novaforma = popCarregador(cesq);
-
-            if (novaforma == NULL) {
-                printf("Carregador esquerdo vazio!\n");
-                break;
-            }
-
-            if (d->forma != NULL) {
-                void *atualforma = popDisparador(d);
-                pushCarregador(cdir, atualforma);
-            }
-
-            pushDisparador(d, novaforma);
-
-        } else if (botao == 'd') {
-            void *novaforma = popCarregador(cdir);
-
-            if (novaforma == NULL) {
-                printf("Carregador direito vazio!\n");
-                break;
-            }
-
-            if (d->forma != NULL) {
-                void *atualforma = popDisparador(d);
-                pushCarregador(cesq, atualforma);
-            }
-
-            pushDisparador(d, novaforma);
-
-        } else {
-            printf("Botão inválido! Use 'e' ou 'd'.\n");
-            return;
+            novaforma = popCarregador(cesq, &id, &tipo);
+        } 
+        else if (botao == 'd') {
+            novaforma = popCarregador(cdir, &id, &tipo);
         }
+
+        if (!novaforma) {
+            printf("Carregador %c vazio!\n", botao);
+            break;
+        }
+
+        if (d->forma != NULL) {
+            void *atualforma = popDisparador(d);
+            pushCarregador((botao == 'e') ? cdir : cesq, atualforma, d->id, d->tipo);
+        }
+
+        pushDisparador(d, novaforma, id, tipo);
+    }
+
+    if (d->forma != NULL) {
+        if (!txt) {
+            txt = fopen("saida.txt", "a");
+            if (!txt) {
+                printf("Erro ao abrir arquivo de saída!\n");
+                return;
+            }
+        }
+
+        reportaDados(d->forma, d->tipo, txt);
     }
 }
 
 
-void disparar(DISPARADOR *d, ARENA *a, double dx, double dy, FILE *txt) {
+void disparar(DISPARADOR *d, ARENA *a, PILHA *chao, double dx, double dy, FILE *txt) {
     if (!d || !d->forma || !a) return;
 
     void *forma = d->forma; 
@@ -110,54 +123,47 @@ void disparar(DISPARADOR *d, ARENA *a, double dx, double dy, FILE *txt) {
     switch (d->tipo) {
         case CIRCULO: {
             Circulo c = (Circulo) forma;
-            double x = getXCirculo(c);
-            double y = getYCirculo(c);
+            double x = xCirculo(c);
+            double y = yCirculo(c);
             setXCirculo(c, x + dx);
             setYCirculo(c, y + dy);
-            if (txt)
-                fprintf(txt, "CIRCULO %d -> Nova pos: (%.2lf, %.2lf)\n", d->id, x + dx, y + dy);
+
+    reportaDados(forma, d->tipo, txt);
             break;
         }
 
         case RETANGULO: {
             Retangulo r = (Retangulo) forma;
-            double x = getXRetangulo(r);
-            double y = getYRetangulo(r);
+            double x = xRetangulo(r);
+            double y = yRetangulo(r);
             setXRetangulo(r, x + dx);
             setYRetangulo(r, y + dy);
-            if (txt)
-                fprintf(txt, "RETANGULO %d -> Nova pos: (%.2lf, %.2lf)\n", d->id, x + dx, y + dy);
-            break;
+           reportaDados(forma, d->tipo, txt);
         }
 
         case TEXTO: {
             Texto t = (Texto) forma;
-            double x = getXTexto(t);
-            double y = getYTexto(t);
+            double x = xTexto(t);
+            double y = yTexto(t);
             setXTexto(t, x + dx);
             setYTexto(t, y + dy);
-            if (txt)
-                fprintf(txt, "TEXTO %d -> Nova pos: (%.2lf, %.2lf)\n", d->id, x + dx, y + dy);
-            break;
+            reportaDados(forma, d->tipo, txt);
         }
 
         case LINHA: {
             Linha l = (Linha) forma;
-            double x1 = getX1Linha(l);
-            double y1 = getY1Linha(l);
-            double x2 = getX2Linha(l);
-            double y2 = getY2Linha(l);
+            double x1 = x1Linha(l);
+            double y1 = y1Linha(l);
+            double x2 = x2Linha(l);
+            double y2 = y2Linha(l);
             setX1Linha(l, x1 + dx);
             setY1Linha(l, y1 + dy);
             setX2Linha(l, x2 + dx);
             setY2Linha(l, y2 + dy);
-            if (txt)
-                fprintf(txt, "LINHA %d -> Nova pos: (%.2lf, %.2lf)-(%.2lf, %.2lf)\n", 
-                        d->id, x1 + dx, y1 + dy, x2 + dx, y2 + dy);
-            break;
+            reportaDados(forma, d->tipo, txt);
         }
         
-        pushArena(a, forma, id, tipo);
+        pushArena(a, forma, d->id, d->tipo);
 
         if (nFormas(a) == 2) {
             analisaArena(a, chao);

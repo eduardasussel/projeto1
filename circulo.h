@@ -15,6 +15,8 @@ double translada(Circulo t, double angulo, double extensão);
 
 void toSvg(Circulo t, char buf[], int lenBuf);
 
+int iCirculo(Circulo c);
+
 double xCirculo(Circulo c);
 
 double yCirculo(Circulo c);

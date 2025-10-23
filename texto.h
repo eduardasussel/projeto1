@@ -16,4 +16,20 @@ double translada(Texto t, double angulo, double extensão);
 
 void toSvg(Texto t, char buf[], int lenBuf);
 
+int iTexto(Texto t);
+
+double xTexto(Texto t);
+
+double yTexto(Texto t);
+
+const char* corTextoP(Texto r);
+
+const char* corTextoB(Texto r);
+
+char aTexto(Texto t);
+
+const char* txtoTexto(Texto t) ;
+
+
+
 #endif

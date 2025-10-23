@@ -6,7 +6,6 @@ typedef void *Linha;
 
 Linha criaLinha(int i, double x1, double y1, double x2, double y2, char *corp);
 
-
 double area(Linha t);
 
 double rotaciona(Linha t, double graus);
@@ -16,5 +15,17 @@ void moveLinha(Linha t, double dx, double dy);
 double translada(Linha t, double angulo, double extensão);
 
 void toSvg(Linha t, char buf[], int lenBuf);
+
+int iLinha(Linha i);
+
+double x1Linha(Linha l);
+
+double x2Linha(Linha l);
+
+double y1Linha(Linha l);
+
+double y2Linha(Linha l);
+
+const char* corCirculoB(Linha l);
 
 #endif

@@ -189,10 +189,13 @@ int sobrepor(void *forma1, TipoForma tipo1, void *forma2, TipoForma tipo2){
 
 const char *PegaCorP(void *forma1, TipoForma tipo1){
     switch(tipo1) {
-        case CIRCULO:   return corCirculoP(forma1);
-        case RETANGULO: return corRetanguloP(forma1);
-        case TEXTO:     return corTextoP(forma1);
-        case LINHA:     return corLinhaP(forma1);
+        case CIRCULO:   return CorCirculoP(forma1);
+        case RETANGULO: return CorRetanguloP(forma1);
+        case TEXTO:     return CorTextoP(forma1);
+        case LINHA: {
+            const char *corBorda = CorLinhaB(forma1);
+            return corComplementar(corBorda);
+        }
         default: return NULL;
     }
 }
@@ -218,10 +221,14 @@ void MudaCorB(void *forma2, TipoForma tipo2, const char *novaCor){
 
 void MudaCorP(void *forma2, TipoForma tipo2, const char *novaCor){
     switch(tipo2) {
-        case CIRCULO:   novaCorCirculoB(forma2, novaCor); break;
-        case RETANGULO: novaCorRetanguloB(forma2, novaCor); break;
-        case TEXTO:     novaCorTextoB(forma2, novaCor); break;
-        case LINHA:     novaCorLinhaB(forma2, novaCor); break;
+        case CIRCULO:   NovaCorCirculoB(forma2, novaCor); break;
+        case RETANGULO: NovaCorRetanguloB(forma2, novaCor); break;
+        case TEXTO:     NovaCorTextoB(forma2, novaCor); break;
+        case LINHA: {
+            const char *comp = corComplementar(novaCor);
+            NovaCorLinhaB(forma2, comp);
+            break;
+        }
     }
 }
 
@@ -235,6 +242,17 @@ void *clonaForma(void *forma, TipoForma tipo) {
     }
 }
 
+const char* corComplementar(const char *cor) {
+    if (strcmp(cor, "black") == 0) return "white";
+    if (strcmp(cor, "white") == 0) return "black";
+    if (strcmp(cor, "red") == 0) return "cyan";
+    if (strcmp(cor, "green") == 0) return "magenta";
+    if (strcmp(cor, "blue") == 0) return "yellow";
+    if (strcmp(cor, "yellow") == 0) return "blue";
+    if (strcmp(cor, "magenta") == 0) return "green";
+    if (strcmp(cor, "cyan") == 0) return "red";
+    return "gray"; // padrão
+}
 
 void analisaArena(ARENA *a, PILHA *c, ESMAGADO *e){
     AFORMA *forma1 = a->topo;
@@ -252,7 +270,14 @@ void analisaArena(ARENA *a, PILHA *c, ESMAGADO *e){
             push(c, forma2->forma);
 
         } else if (area1 >= area2){
-            const char *novaCorP = pegaCorP(forma1->forma, forma1->tipo);
+            const char *novaCorP;
+            if (forma1->tipo == LINHA) {
+                const char *corOriginal = PegaCorB(forma1->forma, forma1->tipo);
+                novaCorP = corComplementar(corOriginal);
+            } else {
+                novaCorP = PegaCorP(forma1->forma, forma1->tipo);
+            }
+
             const char *novaCorB = pegaCorB(forma1->forma, forma1->tipo);
             mudaCorB(forma2->forma, forma2->tipo, novaCorP);
 

@@ -43,6 +43,11 @@ double areaRetangulo(Retangulo r){
     return ret->largura * ret->altura;
 }
 
+int iRetangulo(Retangulo r){
+    RETANGULOS *ret = (RETANGULOS *) r;
+    return ret->i;
+}
+
 double xRetangulo(Retangulo r){
     RETANGULOS *ret = (RETANGULOS *) r;
     return ret->x;
@@ -63,27 +68,32 @@ double altRetangulo(Retangulo r){
     return ret->altura;
 }
 
-const char* corRetanguloP(Retangulo c) {
-    RETANGULOS *ret = (RETANGULOS *) c;
+const char* corRetanguloP(Retangulo r) {
+    RETANGULOS *ret = (RETANGULOS *) r;
     return ret->corp;
 }
 
-const char* corRetanguloB(Retangulo c) {
-    RETANGULOS *ret = (RETANGULOS *) c;
+const char* corRetanguloB(Retangulo r) {
+    RETANGULOS *ret = (RETANGULOS *) r;
     return ret->corb;
 }
 
-void novaCorRetanguloP(Retangulo c, const char *novaCor){
-    RETANGULOS *ret = (RETANGULOS *) c;
+void novaCorRetanguloP(Retangulo r, const char *novaCor){
+    RETANGULOS *ret = (RETANGULOS *) r;
     strcpy(ret->corb, novaCor);
 }
 
-void novaCorRetanguloB(Retangulo c, const char *novaCor){
-    RETANGULOS *ret = (RETANGULOS *) c;
+void novaCorRetanguloB(Retangulo r, const char *novaCor){
+    RETANGULOS *ret = (RETANGULOS *) r;
     strcpy(ret->corp, novaCor);
 }
 
-Retangulo clonaRetangulo(Retangulo c) {
-    RETANGULOS *ret = (RETANGULOS*) c;
-    return criaRetanguloColorido(ret->i, ret->x, ret->y, ret->largura, ret->altura, ret->corb, ret->corp);
+Retangulo clonaRetangulo(Retangulo r) {
+    RETANGULOS *ret = (RETANGULOS*) r;
+    return criaRetangulo(ret->i, ret->x, ret->y, ret->largura, ret->altura, ret->corb, ret->corp);
+}
+
+double PegaAreaRet(Retangulo r){
+    RETANGULOS *ret = (RETANGULOS *) r;
+    return ret->largura * ret->altura;
 }

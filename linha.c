@@ -9,10 +9,10 @@ typedef struct {
     double y1;
     double x2;
     double y2;
-    char corp[20];
+    char corb[20];
 } LINHAS;
 
-Linha criaLinha(int i, double x1, double y1, double x2, double y2, char *corp) {
+Linha criaLinha(int i, double x1, double y1, double x2, double y2, char *corb) {
     LINHAS *l = malloc(sizeof(LINHAS));
     if (!l) {
         printf("Erro ao alocar linha!\n");
@@ -24,7 +24,7 @@ Linha criaLinha(int i, double x1, double y1, double x2, double y2, char *corp) {
     l->y1 = y1;
     l->x2 = x2;
     l->y2 = y2;
-    strcpy(l->corp, corp);
+    strcpy(l->corb, corb);
     return l;
 }
 
@@ -34,4 +34,48 @@ void moveLinha(Linha l, double dx, double dy) {
     lin->y1 += dy;
     lin->x2 += dx;
     lin->y2 += dy;
+}
+
+const char* corLinhaB(Linha l) {
+    LINHAS *lin = (LINHAS *) l;
+    return lin->corb;
+}
+
+void novaCorLinhaP(Linha l, const char *novaCor){
+    LINHAS *lin = (LINHAS *) l;
+    strcpy(lin->corb, novaCor);
+}
+
+Linha clonaLinha(Linha l) {
+    LINHAS *lin = (LINHAS*) l;
+    return criaLinhaColorido(lin->i, lin->x1, lin->y1, lin->x2, lin->y2, lin->corb);
+}
+
+int iLinha(Linha l){
+    LINHAS *lin = (LINHAS *) l;
+    return lin->i;
+}
+
+double x1Linha(Linha l){
+    LINHAS *lin = (LINHAS *) l;
+    return lin->x1;
+}
+
+double x2Linha(Linha l){
+    LINHAS *lin = (LINHAS *) l;
+    return lin->x2;
+}
+double y1Linha(Linha l){
+    LINHAS *lin = (LINHAS *) l;
+    return lin->y1;
+}
+
+double y2Linha(Linha l){
+    LINHAS *lin = (LINHAS *) l;
+    return lin->y2;
+}
+
+const char* corCirculoB(Linha l) {
+    LINHAS *lin = (LINHAS *) l;
+    return lin->corb;
 }

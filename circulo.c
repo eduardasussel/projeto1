@@ -47,6 +47,11 @@ double areaCirculo(Circulo c){
     return PI * cir->raio * cir->raio; 
 }
 
+int iCirculo(Circulo c){
+    CIRCULOS *cir = (CIRCULOS *) c;
+    return cir->i;
+}
+
 double xCirculo(Circulo c){
     CIRCULOS *cir = (CIRCULOS *) c;
     return cir->x;

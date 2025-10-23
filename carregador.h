@@ -7,9 +7,9 @@ typedef struct carregador CARREGADOR;
 
 CARREGADOR *criaCarregador();
 
-int carregadorChao(CARREGADOR *c, PILHA *chao, int n);
+int carregadorChao(CARREGADOR *c, PILHA *chao, int n, FILE *txt);
 
-void *popCarregador(CARREGADOR *c);
+void *popCarregador(CARREGADOR *cesq, int *i, TipoForma tipo);
 
 void *pushCarregador(CARREGADOR *c, void *forma, int id, TipoForma tipo);
 
