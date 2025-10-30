@@ -6,6 +6,7 @@
 #include "retangulo.h"
 #include "texto.h"
 #include "linha.h"
+#include "formas.h"
 
 typedef struct eForma {
     void *forma;
@@ -57,7 +58,7 @@ void *popEsmagado(ESMAGADO *e) {
     return forma;
 }
 
-double calculo(ESMAGADO *e){
+double calculo(ESMAGADO *e, FILE *svg){
     EFORMA *forma = e->topo;
     double area = 0;
     double aTotal = 0;
@@ -81,6 +82,10 @@ double calculo(ESMAGADO *e){
         break;
     }
 
+    double cx, cy;
+    centro(forma->forma, forma->tipo, &cx, &cy);
+    asterisco(svg, cx, cy);
+    
     popEsmagado(e);
 
         forma = forma->prox;
@@ -89,3 +94,4 @@ double calculo(ESMAGADO *e){
     
     return aTotal;
 }
+

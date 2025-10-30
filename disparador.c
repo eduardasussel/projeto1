@@ -110,12 +110,12 @@ void botoes(DISPARADOR *d, char botao, int n, CARREGADOR *cesq, CARREGADOR *cdir
             }
         }
 
-        reportaDados(d->forma, d->tipo, txt);
+        reportaDadosTxtTxt(d->forma, d->tipo, txt);
     }
 }
 
 
-void disparar(DISPARADOR *d, ARENA *a, PILHA *chao, double dx, double dy, FILE *txt) {
+void disparar(DISPARADOR *d, ARENA *a, PILHA *chao, double dx, double dy, char dd, FILE *txt, FILE *svg) {
     if (!d || !d->forma || !a) return;
 
     void *forma = d->forma; 
@@ -128,7 +128,11 @@ void disparar(DISPARADOR *d, ARENA *a, PILHA *chao, double dx, double dy, FILE *
             setXCirculo(c, x + dx);
             setYCirculo(c, y + dy);
 
-    reportaDados(forma, d->tipo, txt);
+            reportaDadosTxt(forma, d->tipo, txt);
+
+     if (dd == 'v') {
+            dimensoesDisp(x, y, x+dx, y+dy, svg);
+        }
             break;
         }
 
@@ -138,7 +142,13 @@ void disparar(DISPARADOR *d, ARENA *a, PILHA *chao, double dx, double dy, FILE *
             double y = yRetangulo(r);
             setXRetangulo(r, x + dx);
             setYRetangulo(r, y + dy);
-           reportaDados(forma, d->tipo, txt);
+
+            reportaDadosTxt(forma, d->tipo, txt);
+
+           if (dd == 'v') {
+            dimensoesDisp(x, y, x+dx, y+dy, svg);
+        }
+            break;
         }
 
         case TEXTO: {
@@ -147,7 +157,13 @@ void disparar(DISPARADOR *d, ARENA *a, PILHA *chao, double dx, double dy, FILE *
             double y = yTexto(t);
             setXTexto(t, x + dx);
             setYTexto(t, y + dy);
-            reportaDados(forma, d->tipo, txt);
+
+            reportaDadosTxt(forma, d->tipo, txt);
+
+             if (dd == 'v') {
+            dimensoesDisp(x, y, x+dx, y+dy, svg);
+        }
+            break;
         }
 
         case LINHA: {
@@ -160,7 +176,14 @@ void disparar(DISPARADOR *d, ARENA *a, PILHA *chao, double dx, double dy, FILE *
             setY1Linha(l, y1 + dy);
             setX2Linha(l, x2 + dx);
             setY2Linha(l, y2 + dy);
-            reportaDados(forma, d->tipo, txt);
+
+            reportaDadosTxt(forma, d->tipo, txt);
+
+             if (dd == 'v') {
+            dimensoesDisp(x1, y1, x1+dx, y1+dy, svg);
+        }
+
+        break;
         }
         
         pushArena(a, forma, d->id, d->tipo);

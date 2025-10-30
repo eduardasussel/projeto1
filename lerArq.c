@@ -95,6 +95,9 @@ void lerArquivoQry(const char *arqq, PILHA *chao){
     CARREGADOR *cesq = NULL;
     CARREGADOR *cdir = NULL;
     ARENA *a = NULL;
+    FILE *txt = NULL;
+    FILE *svg = NULL;
+
     
      if (strcmp(comando, "lc") == 0) {
 
@@ -105,7 +108,11 @@ void lerArquivoQry(const char *arqq, PILHA *chao){
                 cesq = criaCarregador();
         }
 
-                    carregadorChao(cesq, chao, n);
+        if(txt = NULL){
+        criaArquivo(txt);
+        }
+
+                    carregadorChao(cesq, chao, n, txt);
     }
 
     if (strcmp(comando, "atch") == 0) {
@@ -129,10 +136,10 @@ void lerArquivoQry(const char *arqq, PILHA *chao){
 
         botoes(d, botao, n, cesq, cdir);
 
+                
+    }
 
-        }
 
-    FILE *txt = NULL;
     if (strcmp(comando, "dsp") == 0) {
     double dx, dy;
     char dd;
@@ -142,7 +149,11 @@ void lerArquivoQry(const char *arqq, PILHA *chao){
         criaArquivo(txt);
     }
 
-    disparar(d, a, chao, dx, dy, txt);
+    if(svg = NULL){
+        criaArquivo(svg);
+    }
+
+    disparar(d, a, chao, dx, dy, dd, txt, svg);
 }
 
 
@@ -161,7 +172,7 @@ void lerArquivoQry(const char *arqq, PILHA *chao){
 
             botoes(d, lado, 1, cesq, cdir);
 
-            disparar(d, a, deslocX, deslocY, 'n'); 
+            disparar(d, a, chao, deslocX, deslocY, 'n'); 
 
             i++;
         }
@@ -177,7 +188,7 @@ if (strcmp(comando, "calc") == 0) {
                 e = criaEsmagado();
 
             } else {
-                calculo(e);
+                calculo(e, svg);
             }
     }
     
