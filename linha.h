@@ -12,7 +12,7 @@ double rotaciona(Linha t, double graus);
 
 void moveLinha(Linha t, double dx, double dy);
 
-double translada(Linha t, double angulo, double extensão);
+double translada(Linha t, double angulo, double extensao);
 
 void toSvg(Linha t, char buf[], int lenBuf);
 

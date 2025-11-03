@@ -12,7 +12,7 @@ double rotaciona(Texto t, double graus);
 
 void move(Texto t, double dx, double dy);
 
-double translada(Texto t, double angulo, double extensão);
+double translada(Texto t, double angulo, double extensao);
 
 void toSvg(Texto t, char buf[], int lenBuf);
 

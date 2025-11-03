@@ -11,4 +11,5 @@ int main(){
 PILHA *chao = criaPilha();
     lerArquivoGeo("arquivo.geo", chao);
     lerArquivoQry("arquivo.qry", chao);
-}
+} 
+

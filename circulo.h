@@ -11,7 +11,7 @@ double rotaciona(Circulo t, double graus);
 
 void moveCirculo(Circulo t, double dx, double dy);
 
-double translada(Circulo t, double angulo, double extensão);
+double translada(Circulo t, double angulo, double extensao);
 
 void toSvg(Circulo t, char buf[], int lenBuf);
 

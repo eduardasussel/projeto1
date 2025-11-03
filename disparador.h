@@ -17,12 +17,12 @@ void botoes(DISPARADOR *d, char botao, int n, CARREGADOR *cesq, CARREGADOR *cdir
 
 void *popDisparador(DISPARADOR *d);
 
-void *pushDisparador(DISPARADOR *d, void *novaforma);
+void *pushDisparador(DISPARADOR *d, void *novaforma, int id, TipoForma tipo);
 
 void disparar(DISPARADOR *d, ARENA *a, PILHA *chao, double dx, double dy, char dd, FILE *txt, FILE *svg);
 
-void rajada(DISPARADOR *d, CARREGADOR *cesq, CARREGADOR *cdir, char botao, double dx, double dy, double ix, double iy);
+void botoes(DISPARADOR *d, char botao, int n, CARREGADOR *cesq, CARREGADOR *cdir, FILE *txt);
 
-double Calculo(double esmagada);
+#endif
 
 #endif

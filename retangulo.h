@@ -12,7 +12,7 @@ double rotaciona(Retangulo t, double graus);
 
 void moveRetangulo(Retangulo t, double dx, double dy);
 
-double translada(Retangulo t, double angulo, double extensão);
+double translada(Retangulo t, double angulo, double extensao);
 
 void toSvg(Retangulo t, char buf[], int lenBuf);
 

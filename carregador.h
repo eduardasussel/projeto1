@@ -2,6 +2,7 @@
 #define CARREGADOR_H
 #include "pilha.h"
 
+typedef enum { CIRCULO, RETANGULO, TEXTO, LINHA } TipoForma;
 
 typedef struct carregador CARREGADOR;
 
