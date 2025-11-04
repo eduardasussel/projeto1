@@ -1,7 +1,6 @@
 #ifndef LINHA_H
 #define LINHA_H
 
-
 typedef void *Linha;
 
 Linha criaLinha(int i, double x1, double y1, double x2, double y2, char *corp);
@@ -26,6 +25,14 @@ double y1Linha(Linha l);
 
 double y2Linha(Linha l);
 
-const char* corCirculoB(Linha l);
+const char* corLinha(Linha l);
+
+void novoX1Linha(Linha l, double x1);
+
+void novoY1Linha(Linha l, double y1);
+
+void novoX2Linha(Linha l, double x1);
+
+void novoY2Linha(Linha l, double y1);
 
 #endif

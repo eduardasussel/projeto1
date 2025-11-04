@@ -15,7 +15,7 @@ typedef struct {
 } TEXTOS;
 
 
-Texto criaTexto(int i, double x, double y, char *a, char *corb, char *corp, char *txto) {
+Texto criaTexto(int i, double x, double y, char a, char *corb, char *corp, char txto[50]) {
     TEXTOS *t = malloc(sizeof(TEXTOS));
     if (!t) {
         printf("Erro ao alocar texto!\n");
@@ -43,11 +43,6 @@ int iTexto(Texto t){
     return tex->i;
 }
 
-double iTexto(Texto t){
-    TEXTOS *tex = (TEXTOS *) t;
-    return tex->i;
-}
-
 double xTexto(Texto t){
     TEXTOS *tex = (TEXTOS *) t;
     return tex->x;
@@ -68,7 +63,7 @@ const char* corTextoB(Texto t) {
     return tex->corb;
 }
 
-char aTexto(Texto t) {
+const char *aTexto(Texto t) {
     TEXTOS *tex = (TEXTOS *) t;
     return tex->a;
 }
@@ -76,4 +71,14 @@ char aTexto(Texto t) {
 const char* txtoTexto(Texto t) {
     TEXTOS *tex = (TEXTOS *) t;
     return tex->txto;
+}
+
+void novoXTexto(Texto t, double x){
+    TEXTOS *tex = (TEXTOS *) t;
+    tex->x = x; 
+}
+
+void novoYTexto(Texto t, double y){
+    TEXTOS *tex = (TEXTOS *) t;
+    tex->y = y; 
 }

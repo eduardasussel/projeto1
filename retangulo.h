@@ -36,4 +36,8 @@ void novaCorRetanguloB(Retangulo r, const char *novaCor);
 
 Retangulo clonaRetangulo(Retangulo r);
 
+void novoXRetangulo(Retangulo c, double x);
+
+void novoYRetangulo(Retangulo c, double y);
+
 #endif

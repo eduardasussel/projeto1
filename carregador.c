@@ -2,10 +2,9 @@
 #include <stdlib.h>
 #include "carregador.h"
 #include "pilha.h"
+#include "gerarTxt.h"
 
-typedef enum { CIRCULO, RETANGULO, TEXTO, LINHA } TipoForma;
-
-typedef struct forma{
+typedef struct forma {
     void *forma;
     int id;  
     TipoForma tipo;
@@ -18,7 +17,6 @@ typedef struct carregador {
     FORMA *topo;
 } CARREGADOR;
 
-
 CARREGADOR *criaCarregador() {
     CARREGADOR *c = malloc(sizeof(CARREGADOR));
     c->topo = NULL;
@@ -27,7 +25,7 @@ CARREGADOR *criaCarregador() {
 
 int carregadorChao(CARREGADOR *c, PILHA *chao, int n, FILE *txt) {
     for (int i = 0; i < n; i++) {
-        FORMA *fchao = pop(chao);
+        FORMA *fchao = (FORMA *)pop(chao);
         if (!fchao) return 0;
 
         PONT novo = malloc(sizeof(FORMA));
@@ -36,40 +34,44 @@ int carregadorChao(CARREGADOR *c, PILHA *chao, int n, FILE *txt) {
         novo->forma = fchao->forma;
         novo->id = fchao->id;
         novo->tipo = fchao->tipo;
-
         novo->prox = c->topo;
         c->topo = novo;
 
         if (txt != NULL)
-            reportaDados(fchao->forma, fchao->tipo, txt);
+            reportaDadosTxt(fchao->forma, fchao->tipo, txt);
     }
 
     return 1;
 }
 
-
-void pushCarregador(CARREGADOR *c, void *novaforma, int id, TipoForma tipo){
+void pushCarregador(CARREGADOR *c, void *forma, int id, TipoForma tipo) {
     if (!c) return;
+
     FORMA *novo = malloc(sizeof(FORMA));
     if (!novo) return;
-    novo->forma = novaforma;
+
+    novo->forma = forma;
     novo->id = id;
     novo->tipo = tipo;
     novo->prox = c->topo;
     c->topo = novo;
 }
 
-void *popCarregador(CARREGADOR *c, int *id, TipoForma tipo) {
+void *popCarregador(CARREGADOR *c, int *id, TipoForma *tipo) {
     if (!c || !c->topo) return NULL;
 
     FORMA *removido = c->topo;
     void *forma = removido->forma;
 
     if (id) *id = removido->id;
-    if (tipo) tipo = removido->tipo;
+    if (tipo) *tipo = removido->tipo;
 
     c->topo = removido->prox;
     free(removido);
 
     return forma;
+}
+
+int carregadorVazio(CARREGADOR *c) {
+    return (c == NULL || c->topo == NULL);
 }

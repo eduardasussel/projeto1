@@ -1,8 +1,8 @@
 #ifndef ESMAGADO_H
 #define ESMAGADO_H
+#include "tipos.h"
 
 typedef struct esmagado ESMAGADO;
-typedef enum { CIRCULO, RETANGULO, TEXTO, LINHA } TipoForma;
 
 ESMAGADO *criaEsmagado();
 

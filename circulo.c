@@ -89,5 +89,15 @@ void novaCorCirculoB(Circulo c, const char *novaCor){
 
 Circulo clonaCirculo(Circulo c) {
     CIRCULOS *cir = (CIRCULOS*) c;
-    return criaCirculoColorido(cir->i, cir->x, cir->y, cir->raio, cir->corb, cir->corp);
+    return criaCirculo(cir->i, cir->x, cir->y, cir->raio, cir->corb, cir->corp);
+}
+
+void novoXCirculo(Circulo c, double x){
+    CIRCULOS *cir = (CIRCULOS *) c;
+    cir->x = x; 
+}
+
+void novoYCirculo(Circulo c, double y){
+    CIRCULOS *cir = (CIRCULOS *) c;
+    cir->y = y; 
 }

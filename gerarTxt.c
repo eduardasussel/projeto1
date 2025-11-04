@@ -7,57 +7,54 @@
 #include "linha.h"
 #include "disparador.h"
 
-typedef enum { CIRCULO, RETANGULO, LINHA, TEXTO } TipoForma;
-
-void criaArquivo(FILE *fp){
-    FILE *fp = fopen("dadosFormas.txt", "w");
-    if(fp == NULL){
-        printf("Erro na criação do arquivo");
+// Cria e retorna o arquivo .txt para escrita
+FILE *criaArquivoTxt(const char *nomeArquivo) {
+    FILE *arquivo = fopen(nomeArquivo, "w");
+    if (arquivo == NULL) {
+        printf("Erro na criação do arquivo de texto!\n");
+        return NULL;
     }
-
-    fclose(fp);
+    return arquivo;
 }
 
-
-void reportaDadosTxt(void *forma, TipoForma tipo, FILE *txt){
+void reportaDadosTxt(void *forma, TipoForma tipo, FILE *txt) {
     if (forma == NULL || txt == NULL) return;
 
     switch (tipo) {
-
         case CIRCULO: {
             Circulo c = (Circulo) forma;
-            fprintf(txt, 
+            fprintf(txt,
                 "Círculo (id=%d): x=%.2lf, y=%.2lf, r=%.2lf, corb=%s, corp=%s\n",
-                idCirculo(c), 
-                xCirculo(c), 
-                yCirculo(c), 
-                raioCirculo(c), 
-                corbCirculo(c), 
-                corpCirculo(c)
+                iCirculo(c),
+                xCirculo(c),
+                yCirculo(c),
+                raioCirculo(c),
+                corCirculoB(c),
+                corCirculoP(c)
             );
             break;
         }
 
         case RETANGULO: {
             Retangulo r = (Retangulo) forma;
-            fprintf(txt, 
+            fprintf(txt,
                 "Retângulo (id=%d): x=%.2lf, y=%.2lf, largura=%.2lf, altura=%.2lf, corb=%s, corp=%s\n",
-                idRetangulo(r),
+                iRetangulo(r),
                 xRetangulo(r),
                 yRetangulo(r),
                 larRetangulo(r),
                 altRetangulo(r),
-                corbRetangulo(r),
-                corpRetangulo(r)
+                corRetanguloB(r),
+                corRetanguloP(r)
             );
             break;
         }
 
         case LINHA: {
             Linha l = (Linha) forma;
-            fprintf(txt, 
+            fprintf(txt,
                 "Linha (id=%d): (x1=%.2lf, y1=%.2lf) → (x2=%.2lf, y2=%.2lf), cor=%s\n",
-                idLinha(l),
+                iLinha(l),
                 x1Linha(l),
                 y1Linha(l),
                 x2Linha(l),
@@ -69,21 +66,26 @@ void reportaDadosTxt(void *forma, TipoForma tipo, FILE *txt){
 
         case TEXTO: {
             Texto t = (Texto) forma;
-            fprintf(txt, 
-                "Texto (id=%d): x=%.2lf, y=%.2lf, corb=%s, corp=%s, a=%c, conteúdo=\"%s\"\n",
-                idTexto(t),
+            fprintf(txt,
+                "Texto (id=%d): x=%.2lf, y=%.2lf, corb=%s, corp=%s, alinhamento=%s, conteudo=\"%s\"\n",
+                iTexto(t),
                 xTexto(t),
                 yTexto(t),
                 corTextoB(t),
                 corTextoP(t),
-                txtoTextoB(t),
-                aTexto(t)
+                aTexto(t),
+                txtoTexto(t)
             );
             break;
         }
 
         default:
-
             break;
+    }
+}
+
+void fechaArquivoTxt(FILE *txt) {
+    if (txt != NULL) {
+        fclose(txt);
     }
 }

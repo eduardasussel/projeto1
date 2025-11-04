@@ -31,6 +31,10 @@ void novaCorCirculoP(Circulo c, const char *novaCor);
 
 void novaCorCirculoB(Circulo c, const char *novaCor);
 
+void novoXCirculo(Circulo c, double x);
+
+void novoYCirculo(Circulo c, double y);
+
 Circulo clonaCirculo(Circulo c);
 
 #endif

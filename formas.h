@@ -1,7 +1,6 @@
 #ifndef FORMAS_H
 #define FORMAS_H
-
-typedef enum { CIRCULO, RETANGULO, TEXTO, LINHA } TipoForma;
+#include "tipos.h"
 
 int idForma(void *forma, TipoForma tipo);
 

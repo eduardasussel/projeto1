@@ -97,3 +97,13 @@ double PegaAreaRet(Retangulo r){
     RETANGULOS *ret = (RETANGULOS *) r;
     return ret->largura * ret->altura;
 }
+
+void novoXRetangulo(Retangulo r, double x){
+    RETANGULOS *ret = (RETANGULOS*) r;
+    ret->x = x; 
+}
+
+void novoYRetangulo(Retangulo r, double y){
+    RETANGULOS *ret = (RETANGULOS*) r;
+    ret->y = y; 
+}

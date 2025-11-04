@@ -1,5 +1,6 @@
 #ifndef GERARTXT_H
 #define GERARTXT_H
+#include "tipos.h"
 
 void criaArquivo();
 

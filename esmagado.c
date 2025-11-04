@@ -7,6 +7,7 @@
 #include "texto.h"
 #include "linha.h"
 #include "formas.h"
+#include "gerarSvg.h"
 
 typedef struct eForma {
     void *forma;
@@ -16,13 +17,13 @@ typedef struct eForma {
 } EFORMA;
 
 struct esmagado {
-    ESMAGADO *topo;
+    EFORMA *topo;
 };
 
 ESMAGADO *criaEsmagado() {
     ESMAGADO *e = malloc(sizeof(ESMAGADO));
     if (!e) {
-        printf("Erro ao alocar essa pilha!\n");
+        printf("Erro ao alocar pilha de formas esmagadas!\n");
         exit(1);
     }
     e->topo = NULL;
@@ -32,9 +33,9 @@ ESMAGADO *criaEsmagado() {
 void pushEsmagado(ESMAGADO *e, void *forma, int id, TipoForma tipo) {
     if (!e) return;
 
-    EFORMA *novo = malloc(sizeof(ESMAGADO));
+    EFORMA *novo = malloc(sizeof(EFORMA));
     if (!novo) {
-        printf("Erro ao alocar forma!\n");
+        printf("Erro ao alocar forma esmagada!\n");
         exit(1);
     }
 
@@ -58,40 +59,34 @@ void *popEsmagado(ESMAGADO *e) {
     return forma;
 }
 
-double calculo(ESMAGADO *e, FILE *svg){
-    EFORMA *forma = e->topo;
-    double area = 0;
-    double aTotal = 0;
+double calculo(ESMAGADO *e, FILE *svg) {
+    if (!e) return 0.0;
+    double aTotal = 0.0;
 
-    while(forma !=NULL){
-        switch (forma->tipo) {
-        case CIRCULO:
-        area = areaCirculo(forma->forma);
-        break;
+    while (e->topo != NULL) {
+        EFORMA *node = e->topo;
 
-        case RETANGULO:
-        area = areaRetangulo(forma->forma);
-        break;
+        double area = 0.0;
+        switch (node->tipo) {
+            case CIRCULO:
+                area = areaCirculo((Circulo) node->forma);
+                break;
+            case RETANGULO:
+                area = areaRetangulo((Retangulo) node->forma);
+                break;
+            case TEXTO:
+            case LINHA:
+                area = 0.0;
+                break;
+        }
 
-        case TEXTO:
-        area = 0;
-        break;
+        double cx = 0.0, cy = 0.0;
+        centro(node->forma, node->tipo, &cx, &cy);
+        if (svg) asterisco(svg, cx, cy); 
 
-        case LINHA:
-        area = 0;
-        break;
-    }
-
-    double cx, cy;
-    centro(forma->forma, forma->tipo, &cx, &cy);
-    asterisco(svg, cx, cy);
-    
-    popEsmagado(e);
-
-        forma = forma->prox;
         aTotal += area;
+        popEsmagado(e);
     }
-    
+
     return aTotal;
 }
-
