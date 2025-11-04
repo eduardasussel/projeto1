@@ -83,6 +83,7 @@ void lerArquivoQry(const char *arqq, PILHA *chao) {
     ARENA *a = NULL;
     FILE *txt = NULL;
     FILE *svg = NULL;
+    ESMAGADO *e = criaEsmagado();
 
     while (fscanf(fq, " %s", comando) == 1) {
 
@@ -126,7 +127,7 @@ void lerArquivoQry(const char *arqq, PILHA *chao) {
             char dd;
             fscanf(fq, "%lf %lf %c", &dx, &dy, &dd);
 
-            disparar(d, a, chao, dx, dy, dd, &txt, &svg);
+            disparar(d, a, chao, e, dx, dy, dd, &txt, &svg);
         }
 
         else if (strcmp(comando, "rjd") == 0) {
@@ -143,7 +144,7 @@ void lerArquivoQry(const char *arqq, PILHA *chao) {
                     double deslocY = dy + i * iy;
 
                     botoes(d, lado, 1, cesq, cdir, &txt);
-                    disparar(d, a, chao, deslocX, deslocY, 'n', &txt, &svg);
+                    disparar(d, a, chao, e, deslocX, deslocY, 'n', &txt, &svg);
 
                     i++;
                 }

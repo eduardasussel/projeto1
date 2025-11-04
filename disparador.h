@@ -19,7 +19,7 @@ void *popDisparador(DISPARADOR *d);
 
 void *pushDisparador(DISPARADOR *d, void *novaforma, int id, TipoForma tipo);
 
-void disparar(DISPARADOR *d, ARENA *a, PILHA *chao, double dx, double dy, char dd, FILE **txt, FILE **svg);
+void disparar(DISPARADOR *d, ARENA *a, PILHA *chao, ESMAGADO *e, double dx, double dy, char dd, FILE **txt, FILE **svg);
 
 void botoes(DISPARADOR *d, char botao, int n, CARREGADOR *cesq, CARREGADOR *cdir, FILE **txt);
 

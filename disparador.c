@@ -113,7 +113,7 @@ void botoes(DISPARADOR *d, char botao, int n, CARREGADOR *cesq, CARREGADOR *cdir
 }
 
 
-void disparar(DISPARADOR *d, ARENA *a, PILHA *chao, double dx, double dy, char dd, FILE **txt, FILE **svg) {
+void disparar(DISPARADOR *d, ARENA *a, PILHA *chao, ESMAGADO *e, double dx, double dy, char dd, FILE **txt, FILE **svg) {
     if (!d || !d->forma || !a) return;
 
     if (*txt == NULL) {
@@ -178,7 +178,10 @@ void disparar(DISPARADOR *d, ARENA *a, PILHA *chao, double dx, double dy, char d
     }
 
     pushArena(a, forma, d->id, d->tipo);
-    if (nFormas(a) >= 2) analisaArena(a, chao, NULL);  //ARRUMAR COM ESMAGADO
+    
+   if (nFormas(a) >= 2) {
+    analisaArena(a, chao, e);
+}
 
     d->forma = NULL;
 }
