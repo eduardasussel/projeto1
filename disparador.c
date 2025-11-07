@@ -8,69 +8,76 @@
 #include "texto.h"
 #include "linha.h"
 #include "gerarTxt.h"
-#include "gerarTxt.h"
 #include "gerarSvg.h"
-#include "esmagado.h" 
 
-
-typedef struct disparador {
+typedef struct disparador_s {
     double dx;
     double dy;
     int id;
     TipoForma tipo;
     void *forma;
-    struct carregador *cesqencaixado;
-    struct carregador *cdirencaixado;
-} DISPARADOR;
+    CARREGADOR cesqencaixado; 
+    CARREGADOR cdirencaixado;
+} disparador_s;
 
-DISPARADOR *criaDisparador(double dx, double dy) {
-    DISPARADOR *d = malloc(sizeof(DISPARADOR));
+typedef disparador_s *DisparadorImpl;
+
+DISPARADOR criaDisparador(double dx, double dy) {
+    DisparadorImpl d = malloc(sizeof(*d));
     if (!d) {
         printf("Erro ao alocar disparador!\n");
         exit(1);
     }
     d->dx = dx;
     d->dy = dy;
+    d->id = -1;
+    d->tipo = -1;
     d->forma = NULL;
     d->cesqencaixado = NULL;
     d->cdirencaixado = NULL;
-    return d;
+    return (DISPARADOR)d;
 }
 
-void posicionarDis(DISPARADOR *d, double dx, double dy) {
+void posicionarDis(DISPARADOR d, double dx, double dy) {
     if (!d) return;
-    d->dx = dx;
-    d->dy = dy;
+    DisparadorImpl s = (DisparadorImpl)d;
+    s->dx = dx;
+    s->dy = dy;
 }
 
-void encaixarCarregador(DISPARADOR *d, CARREGADOR *cesq, CARREGADOR *cdir) {
+void encaixarCarregador(DISPARADOR d, CARREGADOR cesq, CARREGADOR cdir) {
     if (!d) return;
-    d->cesqencaixado = cesq;
-    d->cdirencaixado = cdir;
+    DisparadorImpl s = (DisparadorImpl)d;
+    s->cesqencaixado = cesq;
+    s->cdirencaixado = cdir;
 }
 
-void *pushDisparador(DISPARADOR *d, void *novaforma, int id, TipoForma tipo) {
+void *pushDisparador(DISPARADOR d, void *novaforma, int id, TipoForma tipo) {
     if (!d) return NULL;
-    d->forma = novaforma;
-    d->id = id;
-    d->tipo = tipo;
+    DisparadorImpl s = (DisparadorImpl)d;
+    s->forma = novaforma;
+    s->id = id;
+    s->tipo = tipo;
     return novaforma;
 }
 
-void *popDisparador(DISPARADOR *d) {
-    if (!d || !d->forma) return NULL;
-    void *formaRemovida = d->forma;
-    d->forma = NULL;
-    return formaRemovida;
+void *popDisparador(DISPARADOR d) {
+    if (!d) return NULL;
+    DisparadorImpl s = (DisparadorImpl)d;
+    if (!s->forma) return NULL;
+    void *ret = s->forma;
+    s->forma = NULL;
+    return ret;
 }
 
-void botoes(DISPARADOR *d, char botao, int n, CARREGADOR *cesq, CARREGADOR *cdir, FILE **txt) {
-    if (!d || !cesq || !cdir) {
-        printf("Disparador ou carregadores não inicializados!\n");
+void botoes(DISPARADOR d, char botao, int n, CARREGADOR cesq, CARREGADOR cdir, FILE **txt) {
+    if (!d) {
+        printf("Disparador não inicializado!\n");
         return;
     }
+    DisparadorImpl s = (DisparadorImpl)d;
 
-    if (d->cesqencaixado == NULL || d->cdirencaixado == NULL) {
+    if (s->cesqencaixado == NULL || s->cdirencaixado == NULL) {
         printf("Carregadores não encaixados!\n");
         return;
     }
@@ -90,7 +97,7 @@ void botoes(DISPARADOR *d, char botao, int n, CARREGADOR *cesq, CARREGADOR *cdir
 
         if (botao == 'e') {
             novaforma = popCarregador(cesq, &id, &tipo);
-        } else if (botao == 'd') {
+        } else {
             novaforma = popCarregador(cdir, &id, &tipo);
         }
 
@@ -99,22 +106,24 @@ void botoes(DISPARADOR *d, char botao, int n, CARREGADOR *cesq, CARREGADOR *cdir
             break;
         }
 
-        if (d->forma != NULL) {
+        if (s->forma != NULL) {
             void *atual = popDisparador(d);
-            pushCarregador((botao == 'e') ? cdir : cesq, atual, d->id, d->tipo);
+            /* devolve a forma atual ao lado oposto */
+            pushCarregador((botao == 'e') ? cdir : cesq, atual, s->id, s->tipo);
         }
 
         pushDisparador(d, novaforma, id, tipo);
     }
 
-    if (d->forma != NULL) {
-        reportaDadosTxt(d->forma, d->tipo, *txt);
+    if (s->forma != NULL) {
+        reportaDadosTxt(s->forma, s->tipo, *txt);
     }
 }
 
-
-void disparar(DISPARADOR *d, ARENA *a, PILHA *chao, ESMAGADO *e, double dx, double dy, char dd, FILE **txt, FILE **svg) {
-    if (!d || !d->forma || !a) return;
+void disparar(DISPARADOR d, ARENA *a, PILHA *chao, ESMAGADO *e, double dx, double dy, char dd, FILE **txt, FILE **svg) {
+    if (!d) return;
+    DisparadorImpl s = (DisparadorImpl)d;
+    if (!s->forma || !a) return;
 
     if (*txt == NULL) {
         *txt = fopen("saida.txt", "a");
@@ -132,56 +141,51 @@ void disparar(DISPARADOR *d, ARENA *a, PILHA *chao, ESMAGADO *e, double dx, doub
         }
     }
 
-    void *forma = d->forma;
+    void *forma = s->forma;
 
-    switch (d->tipo) {
+    switch (s->tipo) {
         case CIRCULO: {
             Circulo c = (Circulo) forma;
             novoXCirculo(c, xCirculo(c) + dx);
             novoYCirculo(c, yCirculo(c) + dy);
-            reportaDadosTxt(forma, d->tipo, *txt);
+            reportaDadosTxt(forma, s->tipo, *txt);
             if (dd == 'v') dimensoesDisp(xCirculo(c) - dx, yCirculo(c) - dy, xCirculo(c), yCirculo(c), *svg);
             break;
         }
-
         case RETANGULO: {
             Retangulo r = (Retangulo) forma;
             novoXRetangulo(r, xRetangulo(r) + dx);
             novoYRetangulo(r, yRetangulo(r) + dy);
-            reportaDadosTxt(forma, d->tipo, *txt);
+            reportaDadosTxt(forma, s->tipo, *txt);
             if (dd == 'v') dimensoesDisp(xRetangulo(r) - dx, yRetangulo(r) - dy, xRetangulo(r), yRetangulo(r), *svg);
             break;
         }
-
         case TEXTO: {
             Texto t = (Texto) forma;
             novoXTexto(t, xTexto(t) + dx);
             novoYTexto(t, yTexto(t) + dy);
-            reportaDadosTxt(forma, d->tipo, *txt);
+            reportaDadosTxt(forma, s->tipo, *txt);
             if (dd == 'v') dimensoesDisp(xTexto(t) - dx, yTexto(t) - dy, xTexto(t), yTexto(t), *svg);
             break;
         }
-
         case LINHA: {
             Linha l = (Linha) forma;
             novoX1Linha(l, x1Linha(l) + dx);
             novoY1Linha(l, y1Linha(l) + dy);
             novoX2Linha(l, x2Linha(l) + dx);
             novoY2Linha(l, y2Linha(l) + dy);
-            reportaDadosTxt(forma, d->tipo, *txt);
+            reportaDadosTxt(forma, s->tipo, *txt);
             if (dd == 'v') dimensoesDisp(x1Linha(l) - dx, y1Linha(l) - dy, x2Linha(l), y2Linha(l), *svg);
             break;
         }
-
         default:
             break;
     }
 
-    pushArena(a, forma, d->id, d->tipo);
-    
-   if (nFormas(a) >= 2) {
-    analisaArena(a, chao, e);
-}
+    pushArena(a, forma, s->id, s->tipo);
+    if (nFormas(a) >= 2) {
+        analisaArena(a, chao, e);
+    }
 
-    d->forma = NULL;
+    s->forma = NULL;
 }

@@ -1,53 +1,52 @@
-#include "pilha.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "pilha.h"
 
 typedef struct no {
     void *forma;
     TipoForma tipo;
     struct no *prox;
-} NO;
+} NO_STRUCT;
 
 typedef struct pilha {
-    NO *topo;
-} PILHA;
+    NO_STRUCT *topo;
+} PILHA_STRUCT;
 
-PILHA *criaPilha() {
-    PILHA *p = malloc(sizeof(PILHA));
+PILHA criaPilha() {
+    PILHA_STRUCT *p = malloc(sizeof(PILHA_STRUCT));
     if (!p) return NULL;
     p->topo = NULL;
-    return p;
+    return (PILHA)p;
 }
 
 void push(PILHA *p, void *forma, TipoForma tipo) {
-    if (!p) return;
+    PILHA_STRUCT *pilha = (PILHA_STRUCT *)p;
+    if (!pilha) return;
 
-    NO *novo = malloc(sizeof(NO));
+    NO_STRUCT *novo = malloc(sizeof(NO_STRUCT));
     if (!novo) return;
 
     novo->forma = forma;
     novo->tipo = tipo;
-    novo->prox = p->topo;
-    p->topo = novo;
+    novo->prox = pilha->topo;
+    pilha->topo = novo;
 }
 
-void *pop(PILHA *p) {
-    if (!p || !p->topo) return NULL;
+NO pop(PILHA *p) {
+    PILHA_STRUCT *pilha = (PILHA_STRUCT *)p;
+    if (!pilha || !pilha->topo) return NULL;
 
-    NO *removido = p->topo;
-    void *forma = removido->forma;
-
-    p->topo = removido->prox;
-    free(removido);
-
-    return forma;
+    NO_STRUCT *removido = pilha->topo;
+    pilha->topo = removido->prox;
+    return (NO)removido; 
 }
 
 int pilhaTamanho(PILHA *p) {
-    if (!p) return 0;
+    PILHA_STRUCT *pilha = (PILHA_STRUCT *)p;
+    if (!pilha) return 0;
 
-    NO *atual = p->topo;
     int tam = 0;
+    NO_STRUCT *atual = pilha->topo;
     while (atual) {
         tam++;
         atual = atual->prox;
@@ -55,23 +54,26 @@ int pilhaTamanho(PILHA *p) {
     return tam;
 }
 
-// Funções auxiliares
-NO *topoPilha(PILHA *p) {
-    if (!p) return NULL;
-    return p->topo;
+NO topoPilha(PILHA *p) {
+    PILHA_STRUCT *pilha = (PILHA_STRUCT *)p;
+    if (!pilha) return NULL;
+    return (NO)pilha->topo;
 }
 
-NO *proxNo(NO *n) {
-    if (!n) return NULL;
-    return n->prox;
+NO proxNo(NO *n) {
+    NO_STRUCT *no = (NO_STRUCT *)n;
+    if (!no) return NULL;
+    return (NO)no->prox;
 }
 
 void *getInfoNo(NO *n) {
-    if (!n) return NULL;
-    return n->forma;
+    NO_STRUCT *no = (NO_STRUCT *)n;
+    if (!no) return NULL;
+    return no->forma;
 }
 
 TipoForma getTipoNo(NO *n) {
-    if (!n) return -1;
-    return n->tipo;
+    NO_STRUCT *no = (NO_STRUCT *)n;
+    if (!no) return -1;
+    return no->tipo;
 }

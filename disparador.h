@@ -6,21 +6,23 @@
 #include "carregador.h"
 #include "arena.h"
 #include "tipos.h"
+#include "esmagado.h"
 
-typedef struct disparador DISPARADOR;
+typedef void *DISPARADOR;
 
-DISPARADOR *criaDisparador(double dx, double dy);
+DISPARADOR criaDisparador(double dx, double dy);
 
-void posicionarDis(DISPARADOR *d, double dx, double dy);
+void posicionarDis(DISPARADOR d, double dx, double dy);
 
-void encaixarCarregador(DISPARADOR *d, CARREGADOR *cesq, CARREGADOR *cdir);
+void encaixarCarregador(DISPARADOR d, CARREGADOR cesq, CARREGADOR cdir);
 
-void *popDisparador(DISPARADOR *d);
+void *pushDisparador(DISPARADOR d, void *novaforma, int id, TipoForma tipo);
 
-void *pushDisparador(DISPARADOR *d, void *novaforma, int id, TipoForma tipo);
+void *popDisparador(DISPARADOR d);
 
-void disparar(DISPARADOR *d, ARENA *a, PILHA *chao, ESMAGADO *e, double dx, double dy, char dd, FILE **txt, FILE **svg);
+void botoes(DISPARADOR d, char botao, int n, CARREGADOR cesq, CARREGADOR cdir, FILE **txt);
 
-void botoes(DISPARADOR *d, char botao, int n, CARREGADOR *cesq, CARREGADOR *cdir, FILE **txt);
+void disparar(DISPARADOR d, ARENA *a, PILHA *chao, ESMAGADO *e, double dx, double dy, char dd, FILE **txt, FILE **svg);
 
 #endif
+

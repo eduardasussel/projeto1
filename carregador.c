@@ -3,75 +3,87 @@
 #include "carregador.h"
 #include "pilha.h"
 #include "gerarTxt.h"
+#include "tipos.h"
 
 typedef struct forma {
     void *forma;
-    int id;  
+    int id;
     TipoForma tipo;
     struct forma *prox;
-} FORMA;
-
-typedef FORMA *PONT;
+} FORMA_STRUCT;
 
 typedef struct carregador {
-    FORMA *topo;
-} CARREGADOR;
+    FORMA_STRUCT *topo;
+} CARREGADOR_STRUCT;
 
-CARREGADOR *criaCarregador() {
-    CARREGADOR *c = malloc(sizeof(CARREGADOR));
+CARREGADOR criaCarregador() {
+    CARREGADOR_STRUCT *c = malloc(sizeof(CARREGADOR_STRUCT));
+    if (!c) return NULL;
     c->topo = NULL;
-    return c;
+    return (CARREGADOR)c;
 }
 
-int carregadorChao(CARREGADOR *c, PILHA *chao, int n, FILE *txt) {
-    for (int i = 0; i < n; i++) {
-        FORMA *fchao = (FORMA *)pop(chao);
-        if (!fchao) return 0;
+int carregadorChao(CARREGADOR *c, PILHA *chao, int idBase, FILE *txt) {
+    if (!c || !(*c) || !chao || !(*chao)) return 0;
 
-        PONT novo = malloc(sizeof(FORMA));
-        if (!novo) return 0;
+    CARREGADOR_STRUCT *carregador = (CARREGADOR_STRUCT *)(*c);
+    NO n = pop(chao);
+    if (!n) return 0;
 
-        novo->forma = fchao->forma;
-        novo->id = fchao->id;
-        novo->tipo = fchao->tipo;
-        novo->prox = c->topo;
-        c->topo = novo;
+    void *forma = getInfoNo(&n);
+    TipoForma tipo = getTipoNo(&n);
 
-        if (txt != NULL)
-            reportaDadosTxt(fchao->forma, fchao->tipo, txt);
-    }
+    FORMA_STRUCT *novo = malloc(sizeof(FORMA_STRUCT));
+    if (!novo) return 0;
 
+    novo->forma = forma;
+    novo->id = idBase + 1;
+    novo->tipo = tipo;
+    novo->prox = carregador->topo;
+    carregador->topo = novo;
+
+    if (txt != NULL)
+        reportaDadosTxt(forma, tipo, txt);
+
+    free(n);
     return 1;
 }
 
 void pushCarregador(CARREGADOR *c, void *forma, int id, TipoForma tipo) {
-    if (!c) return;
+    if (!c || !(*c)) return;
+    CARREGADOR_STRUCT *carregador = (CARREGADOR_STRUCT *)(*c);
 
-    FORMA *novo = malloc(sizeof(FORMA));
+    FORMA_STRUCT *novo = malloc(sizeof(FORMA_STRUCT));
     if (!novo) return;
 
     novo->forma = forma;
     novo->id = id;
     novo->tipo = tipo;
-    novo->prox = c->topo;
-    c->topo = novo;
+    novo->prox = carregador->topo;
+    carregador->topo = novo;
 }
 
 void *popCarregador(CARREGADOR *c, int *id, TipoForma *tipo) {
-    if (!c || !c->topo) return NULL;
+    if (!c || !(*c)) return NULL;
+    CARREGADOR_STRUCT *carregador = (CARREGADOR_STRUCT *)(*c);
 
-    FORMA *removido = c->topo;
+    if (!carregador->topo) return NULL;
+
+    FORMA_STRUCT *removido = carregador->topo;
     void *forma = removido->forma;
 
     if (id) *id = removido->id;
     if (tipo) *tipo = removido->tipo;
 
-    c->topo = removido->prox;
+    carregador->topo = removido->prox;
     free(removido);
 
     return forma;
 }
 
 int carregadorVazio(CARREGADOR *c) {
-    return (c == NULL || c->topo == NULL);
+    if (!c || !(*c)) return 1;
+    CARREGADOR_STRUCT *carregador = (CARREGADOR_STRUCT *)(*c);
+    return (carregador->topo == NULL);
 }
+

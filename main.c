@@ -9,7 +9,7 @@
 int main(){
     
 PILHA *chao = criaPilha();
-    lerArquivoGeo("arquivo.geo", chao);
-    lerArquivoQry("arquivo.qry", chao);
+    lerArquivoGeo("entrada/entrada.geo", chao);
+    lerArquivoQry("entrada/comandos.qry", chao);
 } 
 
