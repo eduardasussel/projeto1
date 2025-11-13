@@ -77,9 +77,9 @@ void lerArquivoQry(const char *arqq, PILHA *chao) {
     }
 
     char comando[10];
-    DISPARADOR *d = NULL;
-    CARREGADOR *cesq = NULL;
-    CARREGADOR *cdir = NULL;
+    DISPARADOR d = NULL;
+    CARREGADOR cesq = NULL;
+    CARREGADOR cdir = NULL;
     ARENA *a = NULL;
     FILE *txt = NULL;
     FILE *svg = NULL;
@@ -98,29 +98,41 @@ void lerArquivoQry(const char *arqq, PILHA *chao) {
             }
         }
 
+
         else if (strcmp(comando, "lc") == 0) {
-            int n;
-            fscanf(fq, "%d", &n);
+    char lado;
+    int n;
+    fscanf(fq, " %c %d", &lado, &n);
 
-            if (!cesq) cesq = criaCarregador();
+    if (lado == 'e') {
+        if (!cesq) cesq = criaCarregador();
+        carregadorChao(cesq, chao, n, txt);
+    }
 
-            if (!txt) txt = fopen("saida.txt", "w");
-            
-            carregadorChao(cesq, chao, n, txt);
-        }
+    else if (lado == 'd') {
+        if (!cdir) cdir = criaCarregador();
+        carregadorChao(cdir, chao, n, txt);
+    }
+}
+        
 
         else if (strcmp(comando, "atch") == 0) {
+            if (!cesq) cesq = criaCarregador();
             if (!cdir) cdir = criaCarregador();
+
             encaixarCarregador(d, cesq, cdir);
         }
 
         else if (strcmp(comando, "shft") == 0) {
-            char botao;
-            int n;
-            fscanf(fq, " %c %d", &botao, &n);
+            int n, i;
+            char lado;
+            fscanf(fq, "%d %c %d", &i, &lado, &n);
 
-            botoes(d, botao, n, cesq, cdir, &txt);
-        }
+            if (lado == 'e') botoes(d, lado, n, &txt);
+            else botoes(d, lado, n, &txt);
+
+    }
+
 
         else if (strcmp(comando, "dsp") == 0) {
             double dx, dy;
@@ -142,8 +154,8 @@ void lerArquivoQry(const char *arqq, PILHA *chao) {
                 while (!carregadorVazio(c)) {
                     double deslocX = dx + i * ix;
                     double deslocY = dy + i * iy;
-
-                    botoes(d, lado, 1, cesq, cdir, &txt);
+                    
+                    botoes(d, lado, 1, &txt);
                     disparar(d, a, chao, e, deslocX, deslocY, 'n', &txt, &svg);
 
                     i++;

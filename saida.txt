@@ -1,0 +1,18 @@
+Círculo (id=5): x=230.00, y=180.00, r=13.00, corb=grey, corp=magenta
+Círculo (id=2): x=120.00, y=45.00, r=15.00, corb=grey, corp=magenta
+Círculo (id=5): x=230.00, y=180.00, r=13.00, corb=grey, corp=magenta
+Retângulo (id=6): x=121.00, y=46.00, largura=100.00, altura=30.00, corb=cyan, corp=yellow
+Círculo (id=5): x=230.00, y=180.00, r=13.00, corb=grey, corp=magenta
+Retângulo (id=4): x=10.00, y=150.00, largura=90.00, altura=40.00, corb=cyan, corp=yellow
+Círculo (id=5): x=230.00, y=180.00, r=13.00, corb=grey, corp=magenta
+Retângulo (id=4): x=10.00, y=150.00, largura=90.00, altura=40.00, corb=cyan, corp=yellow
+Círculo (id=5): x=230.00, y=180.00, r=13.00, corb=grey, corp=magenta
+Retângulo (id=4): x=10.00, y=150.00, largura=90.00, altura=40.00, corb=cyan, corp=yellow
+Círculo (id=5): x=230.00, y=180.00, r=13.00, corb=grey, corp=magenta
+Retângulo (id=4): x=10.00, y=150.00, largura=90.00, altura=40.00, corb=cyan, corp=yellow
+Círculo (id=5): x=230.00, y=180.00, r=13.00, corb=grey, corp=magenta
+Retângulo (id=4): x=10.00, y=150.00, largura=90.00, altura=40.00, corb=cyan, corp=yellow
+Círculo (id=5): x=230.00, y=180.00, r=13.00, corb=grey, corp=magenta
+Retângulo (id=4): x=10.00, y=150.00, largura=90.00, altura=40.00, corb=cyan, corp=yellow
+Círculo (id=5): x=230.00, y=180.00, r=13.00, corb=grey, corp=magenta
+Retângulo (id=4): x=10.00, y=150.00, largura=90.00, altura=40.00, corb=cyan, corp=yellow

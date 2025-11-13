@@ -10,15 +10,26 @@
 #include "gerarTxt.h"
 #include "gerarSvg.h"
 
-typedef struct disparador_s {
+typedef struct disparador {
     double dx;
     double dy;
     int id;
     TipoForma tipo;
     void *forma;
-    CARREGADOR cesqencaixado; 
-    CARREGADOR cdirencaixado;
+    struct carregador *cesqencaixado;
+    struct carregador *cdirencaixado;
 } disparador_s;
+
+typedef struct forma {
+    void *forma;
+    int id;
+    TipoForma tipo;
+    struct forma *prox;
+} FORMA_STRUCT;
+
+typedef struct carregador {
+    FORMA_STRUCT *topo;
+} CARREGADOR_STRUCT;
 
 typedef disparador_s *DisparadorImpl;
 
@@ -48,8 +59,8 @@ void posicionarDis(DISPARADOR d, double dx, double dy) {
 void encaixarCarregador(DISPARADOR d, CARREGADOR cesq, CARREGADOR cdir) {
     if (!d) return;
     DisparadorImpl s = (DisparadorImpl)d;
-    s->cesqencaixado = cesq;
-    s->cdirencaixado = cdir;
+    s->cesqencaixado = (struct carregador*)cesq;
+    s->cdirencaixado = (struct carregador*)cdir;
 }
 
 void *pushDisparador(DISPARADOR d, void *novaforma, int id, TipoForma tipo) {
@@ -70,14 +81,17 @@ void *popDisparador(DISPARADOR d) {
     return ret;
 }
 
-void botoes(DISPARADOR d, char botao, int n, CARREGADOR cesq, CARREGADOR cdir, FILE **txt) {
+void botoes(DISPARADOR d, char botao, int n, FILE **txt) {
     if (!d) {
         printf("Disparador não inicializado!\n");
         return;
     }
-    DisparadorImpl s = (DisparadorImpl)d;
 
-    if (s->cesqencaixado == NULL || s->cdirencaixado == NULL) {
+    DisparadorImpl s = (DisparadorImpl)d;
+    CARREGADOR cesq = (CARREGADOR)s->cesqencaixado;
+    CARREGADOR cdir = (CARREGADOR)s->cdirencaixado;
+
+    if (!cesq || !cdir) {
         printf("Carregadores não encaixados!\n");
         return;
     }
@@ -89,6 +103,11 @@ void botoes(DISPARADOR d, char botao, int n, CARREGADOR cesq, CARREGADOR cdir, F
             return;
         }
     }
+
+    printf("[DEBUG] botoes(): botao=%c n=%d cesq=%p cdir=%p\n", botao, n, cesq, cdir);
+    printf("[DEBUG] botoes(): cesq->topo=%p cdir->topo=%p\n",
+       cesq ? ((CARREGADOR_STRUCT*)cesq)->topo : NULL,
+       cdir ? ((CARREGADOR_STRUCT*)cdir)->topo : NULL);
 
     for (int i = 0; i < n; i++) {
         void *novaforma = NULL;
@@ -108,7 +127,6 @@ void botoes(DISPARADOR d, char botao, int n, CARREGADOR cesq, CARREGADOR cdir, F
 
         if (s->forma != NULL) {
             void *atual = popDisparador(d);
-            /* devolve a forma atual ao lado oposto */
             pushCarregador((botao == 'e') ? cdir : cesq, atual, s->id, s->tipo);
         }
 
@@ -119,6 +137,7 @@ void botoes(DISPARADOR d, char botao, int n, CARREGADOR cesq, CARREGADOR cdir, F
         reportaDadosTxt(s->forma, s->tipo, *txt);
     }
 }
+
 
 void disparar(DISPARADOR d, ARENA *a, PILHA *chao, ESMAGADO *e, double dx, double dy, char dd, FILE **txt, FILE **svg) {
     if (!d) return;

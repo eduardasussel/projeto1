@@ -7,12 +7,12 @@ typedef void *CARREGADOR;
 
 CARREGADOR criaCarregador();
 
-int carregadorChao(CARREGADOR *c, PILHA *chao, int idBase, FILE *txt);
+int carregadorChao(CARREGADOR c, PILHA chao, int idBase, FILE *txt);
 
-int carregadorVazio(CARREGADOR *c);
+int carregadorVazio(CARREGADOR c);
 
-void *popCarregador(CARREGADOR *c, int *id, TipoForma *tipo);
+void *popCarregador(CARREGADOR c, int *id, TipoForma *tipo);
 
-void pushCarregador(CARREGADOR *c, void *forma, int id, TipoForma tipo);
+void pushCarregador(CARREGADOR c, void *forma, int id, TipoForma tipo);
 
 #endif

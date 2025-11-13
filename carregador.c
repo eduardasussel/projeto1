@@ -18,23 +18,34 @@ typedef struct carregador {
 
 CARREGADOR criaCarregador() {
     CARREGADOR_STRUCT *c = malloc(sizeof(CARREGADOR_STRUCT));
-    if (!c) return NULL;
+    if (!c) {
+        return NULL;
+    }
     c->topo = NULL;
     return (CARREGADOR)c;
 }
 
-int carregadorChao(CARREGADOR *c, PILHA *chao, int idBase, FILE *txt) {
-    if (!c || !(*c) || !chao || !(*chao)) return 0;
 
-    CARREGADOR_STRUCT *carregador = (CARREGADOR_STRUCT *)(*c);
+int carregadorChao(CARREGADOR c, PILHA chao, int idBase, FILE *txt) {
+    if (!c || !chao) {
+        return 0;
+    }
+
+    CARREGADOR_STRUCT *carregador = (CARREGADOR_STRUCT *)c;
+
     NO n = pop(chao);
-    if (!n) return 0;
+    if (!n) {
+        return 0;
+    }
 
-    void *forma = getInfoNo(&n);
-    TipoForma tipo = getTipoNo(&n);
+    void *forma = getInfoNo(n);
+    TipoForma tipo = getTipoNo(n);
+
 
     FORMA_STRUCT *novo = malloc(sizeof(FORMA_STRUCT));
-    if (!novo) return 0;
+    if (!novo) {
+        return 0;
+    }
 
     novo->forma = forma;
     novo->id = idBase + 1;
@@ -46,12 +57,14 @@ int carregadorChao(CARREGADOR *c, PILHA *chao, int idBase, FILE *txt) {
         reportaDadosTxt(forma, tipo, txt);
 
     free(n);
+    
     return 1;
 }
 
-void pushCarregador(CARREGADOR *c, void *forma, int id, TipoForma tipo) {
-    if (!c || !(*c)) return;
-    CARREGADOR_STRUCT *carregador = (CARREGADOR_STRUCT *)(*c);
+
+void pushCarregador(CARREGADOR c, void *forma, int id, TipoForma tipo) {
+    if (!c) return;
+    CARREGADOR_STRUCT *carregador = (CARREGADOR_STRUCT *)c;
 
     FORMA_STRUCT *novo = malloc(sizeof(FORMA_STRUCT));
     if (!novo) return;
@@ -63,11 +76,14 @@ void pushCarregador(CARREGADOR *c, void *forma, int id, TipoForma tipo) {
     carregador->topo = novo;
 }
 
-void *popCarregador(CARREGADOR *c, int *id, TipoForma *tipo) {
-    if (!c || !(*c)) return NULL;
-    CARREGADOR_STRUCT *carregador = (CARREGADOR_STRUCT *)(*c);
+void *popCarregador(CARREGADOR c, int *id, TipoForma *tipo){
+    if (!c) return NULL;
+    CARREGADOR_STRUCT *carregador = (CARREGADOR_STRUCT *)c;
 
     if (!carregador->topo) return NULL;
+
+    printf("[DEBUG popCarregador] topo=%p\n", (void*)carregador->topo);
+
 
     FORMA_STRUCT *removido = carregador->topo;
     void *forma = removido->forma;
@@ -81,9 +97,8 @@ void *popCarregador(CARREGADOR *c, int *id, TipoForma *tipo) {
     return forma;
 }
 
-int carregadorVazio(CARREGADOR *c) {
-    if (!c || !(*c)) return 1;
-    CARREGADOR_STRUCT *carregador = (CARREGADOR_STRUCT *)(*c);
+int carregadorVazio(CARREGADOR c) {
+    if (!c) return 1;
+    CARREGADOR_STRUCT *carregador = (CARREGADOR_STRUCT *)c;
     return (carregador->topo == NULL);
 }
-

@@ -19,7 +19,7 @@ PILHA criaPilha() {
     return (PILHA)p;
 }
 
-void push(PILHA *p, void *forma, TipoForma tipo) {
+void push(PILHA p, void *forma, TipoForma tipo) {
     PILHA_STRUCT *pilha = (PILHA_STRUCT *)p;
     if (!pilha) return;
 
@@ -32,16 +32,16 @@ void push(PILHA *p, void *forma, TipoForma tipo) {
     pilha->topo = novo;
 }
 
-NO pop(PILHA *p) {
+NO pop(PILHA p) {
     PILHA_STRUCT *pilha = (PILHA_STRUCT *)p;
     if (!pilha || !pilha->topo) return NULL;
 
     NO_STRUCT *removido = pilha->topo;
     pilha->topo = removido->prox;
-    return (NO)removido; 
+    return (NO)removido;
 }
 
-int pilhaTamanho(PILHA *p) {
+int pilhaTamanho(PILHA p) {
     PILHA_STRUCT *pilha = (PILHA_STRUCT *)p;
     if (!pilha) return 0;
 
@@ -54,11 +54,12 @@ int pilhaTamanho(PILHA *p) {
     return tam;
 }
 
-NO topoPilha(PILHA *p) {
+NO topoPilha(PILHA p) {
     PILHA_STRUCT *pilha = (PILHA_STRUCT *)p;
     if (!pilha) return NULL;
     return (NO)pilha->topo;
 }
+
 
 NO proxNo(NO *n) {
     NO_STRUCT *no = (NO_STRUCT *)n;
