@@ -96,6 +96,13 @@ void botoes(DISPARADOR d, char botao, int n, FILE **txt) {
         return;
     }
 
+    CARREGADOR alvo = (botao == 'e') ? cesq : cdir;
+
+    if (carregadorVazio(alvo)) {
+        printf("Carregador %c está vazio, nada a disparar.\n", botao);
+        return;
+    }
+
     if (*txt == NULL) {
         *txt = fopen("saida.txt", "a");
         if (!*txt) {
@@ -104,30 +111,22 @@ void botoes(DISPARADOR d, char botao, int n, FILE **txt) {
         }
     }
 
-    printf("[DEBUG] botoes(): botao=%c n=%d cesq=%p cdir=%p\n", botao, n, cesq, cdir);
-    printf("[DEBUG] botoes(): cesq->topo=%p cdir->topo=%p\n",
-       cesq ? ((CARREGADOR_STRUCT*)cesq)->topo : NULL,
-       cdir ? ((CARREGADOR_STRUCT*)cdir)->topo : NULL);
-
     for (int i = 0; i < n; i++) {
         void *novaforma = NULL;
         int id;
         TipoForma tipo;
 
-        if (botao == 'e') {
-            novaforma = popCarregador(cesq, &id, &tipo);
-        } else {
-            novaforma = popCarregador(cdir, &id, &tipo);
-        }
+        novaforma = popCarregador(alvo, &id, &tipo);
 
         if (!novaforma) {
-            printf("Carregador %c vazio!\n", botao);
+            printf("Carregador %c acabou.\n", botao);
             break;
         }
 
         if (s->forma != NULL) {
             void *atual = popDisparador(d);
-            pushCarregador((botao == 'e') ? cdir : cesq, atual, s->id, s->tipo);
+            CARREGADOR oposto = (botao == 'e') ? cdir : cesq;
+            pushCarregador(oposto, atual, s->id, s->tipo);
         }
 
         pushDisparador(d, novaforma, id, tipo);
@@ -137,6 +136,7 @@ void botoes(DISPARADOR d, char botao, int n, FILE **txt) {
         reportaDadosTxt(s->forma, s->tipo, *txt);
     }
 }
+
 
 
 void disparar(DISPARADOR d, ARENA *a, PILHA *chao, ESMAGADO *e, double dx, double dy, char dd, FILE **txt, FILE **svg) {

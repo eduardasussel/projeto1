@@ -82,9 +82,6 @@ void *popCarregador(CARREGADOR c, int *id, TipoForma *tipo){
 
     if (!carregador->topo) return NULL;
 
-    printf("[DEBUG popCarregador] topo=%p\n", (void*)carregador->topo);
-
-
     FORMA_STRUCT *removido = carregador->topo;
     void *forma = removido->forma;
 
