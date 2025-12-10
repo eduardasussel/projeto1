@@ -10,6 +10,7 @@ SRC = main.c \
       disparador.c \
       esmagado.c \
 	  forma.c \
+        geo.c \
       gerarSvgxt.c \
       gerarTxt.c \
       linha.c \

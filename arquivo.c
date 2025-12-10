@@ -10,6 +10,7 @@
 #include "carregador.h"
 #include "arena.h"
 #include "esmagado.h"
+#include "geo.h"
 
 
 void lerArquivoGeo(const char *arqg, PILHA *chao){
@@ -30,6 +31,7 @@ while (fscanf(fp, " %c", &forma) == 1) {
         Circulo c = criaCirculo(i, x, y, raio, corb, corp);
 
         push(chao, c, CIRCULO);
+        registrarFormaGeo(c, i, CIRCULO);
     }
 
      if(forma =='r') {
@@ -41,6 +43,7 @@ while (fscanf(fp, " %c", &forma) == 1) {
         Retangulo r = criaRetangulo(i, x, y, largura, altura, corb, corp);
 
         push(chao, r, RETANGULO);
+        registrarFormaGeo(c, i, RETANGULO);
     }
 
     if(forma == 't') {
@@ -52,6 +55,7 @@ while (fscanf(fp, " %c", &forma) == 1) {
         Texto t = criaTexto(i, x, y, a, corb, corp, txto);
 
         push(chao, t, TEXTO);
+        registrarFormaGeo(c, i, TEXTO);
     }
 
     if(forma == 'l'){
@@ -63,6 +67,7 @@ while (fscanf(fp, " %c", &forma) == 1) {
         Linha l = criaLinha(i, x1, y1, x2, y2, corp);
 
          push(chao, l, LINHA);
+         registrarFormaGeo(c, i, LINHA);
     }
 }
 
@@ -75,6 +80,8 @@ void lerArquivoQry(const char *arqq, PILHA *chao) {
         printf("Erro na abertura do arquivo QRY\n");
         return;
     }
+
+    inicializaGeo();
 
     char comando[10];
     DISPARADOR d = NULL;
@@ -101,20 +108,26 @@ void lerArquivoQry(const char *arqq, PILHA *chao) {
 
         else if (strcmp(comando, "lc") == 0) {
     char lado;
-    int n;
-    fscanf(fq, " %c %d", &lado, &n);
+    int id;
+    fscanf(fq, " %c %d", &lado, &id);
+
+    TipoForma tipo;
+    void *forma = buscaFormaGeo(id, &tipo);
+
+    if (!forma) {
+        printf("[ERRO] ID %d não existe no GEO!\n", id);
+        continue;
+    }
 
     if (lado == 'e') {
         if (!cesq) cesq = criaCarregador();
-        carregadorChao(cesq, chao, n, txt);
+        pushCarregador(cesq, forma, id, tipo);
     }
-
     else if (lado == 'd') {
         if (!cdir) cdir = criaCarregador();
-        carregadorChao(cdir, chao, n, txt);
+        pushCarregador(cdir, forma, id, tipo);
     }
-}
-        
+}       
 
         else if (strcmp(comando, "atch") == 0) {
             if (!cesq) cesq = criaCarregador();
